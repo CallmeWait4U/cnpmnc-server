@@ -6,19 +6,19 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Account {
-  id Int @id @default(autoincrement())
+  id String      @id @default(auto()) @map("_id") @db.ObjectId
   username String
   password String
   role Role
 }
 
 model Admin {
-  id            Int @id @default(autoincrement())
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
   avatar        String
   name          String
   code          String
@@ -29,7 +29,7 @@ model Admin {
 }
 
 model Staff {
-  id            Int @id @default(autoincrement())
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
   avatar        String
   name          String
   code          String
@@ -38,19 +38,19 @@ model Staff {
   phoneNumber   String
   address       String
   numLeaveDays  Int
-  // leaveHistory  TimeObject[]
+  leaveHistory  TimeObject[]
 }
 
 model TimeObject {
-  id        Int @id @default(autoincrement())
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
   startDate DateTime
   endDate   DateTime
-  // staff     Staff? @relation(fields: [staffId], references: [id])
-  // staffId   Int? @db.Int
+  staff     Staff? @relation(fields: [staffId], references: [id])
+  staffId   String? @db.ObjectId
 }
 
 model Request {
-  id        Int @id @default(autoincrement())
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   reason    String
   startDate DateTime
@@ -59,7 +59,7 @@ model Request {
 }
 
 model Notification {
-  id      Int @id @default(autoincrement())
+  id      String      @id @default(auto()) @map("_id") @db.ObjectId
   title   String
   content String
   time    DateTime
