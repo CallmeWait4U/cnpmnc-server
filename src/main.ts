@@ -6,3 +6,4 @@ async function bootstrap() {
   await app.listen(3000);
 }
 bootstrap();
+// DATABASE_URL="mongodb+srv://cnpm:48694869@cnpmnc.drtz6gs.mongodb.net/cnpm-database"
