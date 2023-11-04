@@ -17,6 +17,54 @@ model Account {
   role Role
 }
 
+model Admin {
+  id            Int @id @default(autoincrement())
+  avatar        String
+  name          String
+  code          String
+  position      String
+  department    String
+  phoneNumber   String
+  address       String
+}
+
+model Staff {
+  id            Int @id @default(autoincrement())
+  avatar        String
+  name          String
+  code          String
+  position      String
+  department    String
+  phoneNumber   String
+  address       String
+  numLeaveDays  Int
+  // leaveHistory  TimeObject[]
+}
+
+model TimeObject {
+  id        Int @id @default(autoincrement())
+  startDate DateTime
+  endDate   DateTime
+  // staff     Staff? @relation(fields: [staffId], references: [id])
+  // staffId   Int? @db.Int
+}
+
+model Request {
+  id        Int @id @default(autoincrement())
+  title     String
+  reason    String
+  startDate DateTime
+  endDate   DateTime
+  status    String
+}
+
+model Notification {
+  id      Int @id @default(autoincrement())
+  title   String
+  content String
+  time    DateTime
+}
+
 enum Role {
   ADMIN @map("ADMIN")
   STAFF @map("STAFF")
