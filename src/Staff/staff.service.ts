@@ -17,4 +17,13 @@ export class StaffService {
 
     return staffs;
   }
+
+  async createStaff(staff): Promise<any> {
+    const created_staff = await this.databaseService.staff.create({
+      data: staff,
+    });
+    return created_staff;
+  }
+
+  async updateStaff(staff): Promise<any> {}
 }

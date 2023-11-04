@@ -16,6 +16,10 @@ export class AuthService {
 
   async createAccount(username: string, password: string): Promise<any> {
     const passwordHashed = await bcrypt.hash(password, this.saltOrRounds);
+    let old_user = await this.databaseService.account.findFirst({
+      where: { username },
+    });
+    if (old_user) throw new UnauthorizedException();
     let user = await this.databaseService.account.create({
       data: {
         username: username,
@@ -30,6 +34,7 @@ export class AuthService {
     let user = await this.databaseService.account.findFirst({
       where: { username },
     });
+    if (!user) throw new UnauthorizedException();
     if (!bcrypt.compareSync(password, user.password)) {
       throw new UnauthorizedException();
     }
