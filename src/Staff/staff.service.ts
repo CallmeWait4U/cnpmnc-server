@@ -25,5 +25,11 @@ export class StaffService {
     return created_staff;
   }
 
-  async updateStaff(staff): Promise<any> {}
+  async updateStaff(staff_id, staff): Promise<any> {
+    const updated_staff = await this.databaseService.staff.update({
+      data: staff,
+      where: { id: staff_id },
+    });
+    return updated_staff;
+  }
 }
