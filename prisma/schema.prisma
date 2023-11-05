@@ -11,58 +11,75 @@ datasource db {
 }
 
 model Account {
-  id String      @id @default(auto()) @map("_id") @db.ObjectId
-  username String @unique
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  username String  @unique
   password String
-  role Role
+  role     Role
+  token    String?
+  Admin    Admin?  @relation(fields: [adminId], references: [id])
+  adminId  String? @db.ObjectId
+  Staff    Staff?  @relation(fields: [staffId], references: [id])
+  staffId  String? @db.ObjectId
+
+  Notification Notification[]
 }
 
 model Admin {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  avatar        String
-  name          String
-  code          String
-  position      String
-  department    String
-  phoneNumber   String
-  address       String
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  avatar      String
+  name        String
+  code        String
+  position    String
+  department  String
+  phoneNumber String
+  address     String
+  Account     Account[]
+  Staff       Staff[]
 }
 
 model Staff {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  avatar        String
-  name          String
-  code          String
-  position      String
-  department    String
-  phoneNumber   String
-  address       String
-  numLeaveDays  Int
-  leaveHistory  TimeObject[]
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  avatar       String
+  name         String
+  code         String
+  position     String
+  department   String
+  phoneNumber  String
+  address      String
+  numLeaveDays Int
+  leaveHistory TimeObject[]
+  Account      Account[]
+  Request      Request[]
+  Admin        Admin        @relation(fields: [adminId], references: [id])
+  adminId      String       @db.ObjectId
 }
 
 model TimeObject {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   startDate DateTime
   endDate   DateTime
-  staff     Staff? @relation(fields: [staffId], references: [id])
-  staffId   String? @db.ObjectId
+  staff     Staff?   @relation(fields: [staffId], references: [id])
+  staffId   String?  @db.ObjectId
 }
 
 model Request {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   reason    String
   startDate DateTime
   endDate   DateTime
   status    String
+  Staff     Staff    @relation(fields: [staffId], references: [id])
+  staffId   String   @db.ObjectId
 }
 
 model Notification {
-  id      String      @id @default(auto()) @map("_id") @db.ObjectId
-  title   String
-  content String
-  time    DateTime
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String
+  time      DateTime
+  Account   Account  @relation(fields: [accountId], references: [id])
+  accountId String   @db.ObjectId
 }
 
 enum Role {
