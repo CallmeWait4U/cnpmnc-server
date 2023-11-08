@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/Authentication/auth.guard';
 import { StaffService } from './staff.service';
 
@@ -9,5 +9,11 @@ export class StaffController {
   @Get('/')
   async getAllStaff(@Request() req) {
     return this.staffService.getAllStaff(req.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/getDetail')
+  async getStaff(@Query('id') staff_id) {
+    return this.staffService.getStaff(staff_id);
   }
 }

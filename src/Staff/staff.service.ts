@@ -32,4 +32,12 @@ export class StaffService {
     });
     return updated_staff;
   }
+
+  async getStaff(staff_id): Promise<any> {
+    const staff = await this.databaseService.staff.findFirst({
+      where: { id: staff_id },
+    });
+    if (!staff) throw new UnauthorizedException();
+    return staff;
+  }
 }
