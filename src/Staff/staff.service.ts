@@ -30,6 +30,8 @@ export class StaffService {
       data: staff,
       where: { id: staff_id },
     });
-    return updated_staff;
+    let result = {message: "SUCCESS"}
+    if (!updated_staff) result.message = "FAIL";
+    return result;
   }
 }
