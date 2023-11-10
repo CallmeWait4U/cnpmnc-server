@@ -11,7 +11,6 @@ export class StaffService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async getAllStaff(): Promise<any> {
-    let result = {message: ''};
     let staffs = []
     try {
       staffs = await this.databaseService.staff.findMany({
@@ -29,13 +28,15 @@ export class StaffService {
       });
     }
     catch (error) {
-      result.message = 'FAIL'
+      console.log(error);
+      return {message: 'FAIL'}
     }
+    console.log(staffs)
     staffs = staffs.map(({Account, ...rest}) => {
       // console.log(Account)
       return {...rest, role: Account[0].role}
     })
-    // console.log(staffs)
+    console.log(staffs)
     return staffs;
   }
 
