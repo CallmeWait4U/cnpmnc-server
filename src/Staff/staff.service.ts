@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { DatabaseService } from 'libs/database.module';
 
@@ -11,7 +11,7 @@ export class StaffService {
       where: { id: user_id },
     });
     if (!(currentUser.role == Role.ADMIN)) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
     const staffs = await this.databaseService.staff.findMany();
 
@@ -26,12 +26,26 @@ export class StaffService {
   }
 
   async updateStaff(staff_id, staff): Promise<any> {
-    const updated_staff = await this.databaseService.staff.update({
-      data: staff,
-      where: { id: staff_id },
-    });
+    let updated_staff
+    try {
+        updated_staff = await this.databaseService.staff.update({
+        data: staff,
+        where: { id: staff_id },
+      });
+    }
+    catch {
+      return {message: "FAIL"}
+    }
     let result = {message: "SUCCESS"}
     if (!updated_staff) result.message = "FAIL";
     return result;
+  }
+
+  async getStaff(staff_id): Promise<any> {
+    const staff = await this.databaseService.staff.findFirst({
+      where: { id: staff_id },
+    });
+    if (!staff) throw new UnauthorizedException();
+    return staff;
   }
 }
