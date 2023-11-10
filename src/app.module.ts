@@ -9,7 +9,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [DatabaseModule, AuthModule, StaffModule, AccountModule, ChangepassModule, RequestModule],
+  imports: [
+    DatabaseModule,
+    AuthModule,
+    StaffModule,
+    AccountModule,
+    ChangepassModule,
+    RequestModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
