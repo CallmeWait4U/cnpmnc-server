@@ -3,6 +3,7 @@ import { plainToClass } from 'class-transformer';
 import { DatabaseService } from 'libs/database.module';
 import { CreateRequestDTO } from './dtos/create.request.dto';
 import { RequestResponseDto } from './dtos/request.response.dto';
+import { UpdateStatusDTO } from './dtos/update.status.dto';
 
 @Injectable()
 export class RequestService {
@@ -47,5 +48,23 @@ export class RequestService {
       return {message: "FAIL"};
     }
     return { message: 'SUCCESS' };
+  }
+
+  async updateStatus(statusDTO: UpdateStatusDTO){
+    try{
+      await this.databaseService.request.update({
+        where: {
+          id: statusDTO.id,
+        },
+        data: {
+          status: statusDTO.status,
+        },
+      }
+      )
+    }
+    catch{
+      return {message: "FAIL"}
+    }
+    return {message: "SUCCESS"}
   }
 }
