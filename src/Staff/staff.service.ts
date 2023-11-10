@@ -10,15 +10,32 @@ import { DatabaseService } from 'libs/database.module';
 export class StaffService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async getAllStaff(user_id): Promise<any> {
-    const currentUser = await this.databaseService.account.findFirst({
-      where: { id: user_id },
-    });
-    if (!(currentUser.role == Role.ADMIN)) {
-      throw new ForbiddenException();
+  async getAllStaff(): Promise<any> {
+    let result = {message: ''};
+    let staffs = []
+    try {
+      staffs = await this.databaseService.staff.findMany({
+        select: {
+          id: true,
+          name: true,
+          code: true,
+          position: true,
+          department: true,
+          birthday: true,
+          gender: true,
+          address: true,
+          Account: true
+        }
+      });
     }
-    const staffs = await this.databaseService.staff.findMany();
-
+    catch (error) {
+      result.message = 'FAIL'
+    }
+    staffs = staffs.map(({Account, ...rest}) => {
+      // console.log(Account)
+      return {...rest, role: Account[0].role}
+    })
+    // console.log(staffs)
     return staffs;
   }
 
