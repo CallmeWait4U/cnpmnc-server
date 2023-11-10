@@ -3,6 +3,8 @@ import { plainToClass } from 'class-transformer';
 import { DatabaseService } from 'libs/database.module';
 import { CreateRequestDTO } from './dtos/create.request.dto';
 import { RequestResponseDto } from './dtos/request.response.dto';
+import { UpdateStatusDTO } from './dtos/update.status.dto';
+import { RequestDto } from './dtos/request.dto';
 
 @Injectable()
 export class RequestService {
@@ -27,6 +29,14 @@ export class RequestService {
     return requests;
   }
 
+
+  async getAllRequest(): Promise<RequestDto[]>{
+    const requests = await this.databaseService.request.findMany();
+    if (!requests) throw new NotFoundException('Request not found');
+    return requests as RequestDto[];
+  }
+
+
   async createRequest(staff: CreateRequestDTO) {
     const data = {
       title: 'test',
@@ -47,5 +57,23 @@ export class RequestService {
       return {message: "FAIL"};
     }
     return { message: 'SUCCESS' };
+  }
+
+  async updateStatus(statusDTO: UpdateStatusDTO){
+    try{
+      await this.databaseService.request.update({
+        where: {
+          id: statusDTO.id,
+        },
+        data: {
+          status: statusDTO.status,
+        },
+      }
+      )
+    }
+    catch{
+      return {message: "FAIL"}
+    }
+    return {message: "SUCCESS"}
   }
 }
