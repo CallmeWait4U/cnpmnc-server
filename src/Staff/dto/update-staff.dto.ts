@@ -2,7 +2,6 @@ import { PartialType } from '@nestjs/mapped-types';
 import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { CreateStaffDto } from './create-staff.dto';
 
-
 export class UpdateStaffDto extends PartialType(CreateStaffDto) {
   @IsNotEmpty()
   @IsString()
@@ -23,8 +22,7 @@ export class UpdateStaffDto extends PartialType(CreateStaffDto) {
   @IsOptional()
   @IsString()  
   readonly address?:string;
-  
-  @IsOptional()
+
   @IsString()
-  readonly role?:string;
+  readonly role: string;
 }

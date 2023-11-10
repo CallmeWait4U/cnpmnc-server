@@ -1,7 +1,16 @@
-import { Controller, Get, Request, UseGuards, Body, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from 'src/Authentication/auth.guard';
-import { StaffService } from './staff.service';
+import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
+import { StaffService } from './staff.service';
 
 @Controller('staffs')
 export class StaffController {
@@ -10,6 +19,12 @@ export class StaffController {
   @Get('/getAll')
   async getAllStaff(@Request() req) {
     return this.staffService.getAllStaff(req.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('create')
+  async createStaff(@Body() staffInfo: CreateStaffDto): Promise<any> {
+    return await this.staffService.createStaff(staffInfo);
   }
 
   @UseGuards(AuthGuard)
