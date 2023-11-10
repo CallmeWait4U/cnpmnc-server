@@ -1,5 +1,9 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { Role } from '@prisma/client';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { Role, Staff } from '@prisma/client';
 import { DatabaseService } from 'libs/database.module';
 
 @Injectable()
@@ -19,25 +23,34 @@ export class StaffService {
   }
 
   async createStaff(staff): Promise<any> {
+    staff.birthday = new Date(staff.birthday);
+    staff.numLeaveDays = 20;
     const created_staff = await this.databaseService.staff.create({
-      data: staff,
+      data: {
+        ...staff,
+        // Account: { connect: { id: '654b8d41f23b3e78021febbc' } },
+      },
     });
     return created_staff;
   }
 
   async updateStaff(staff_id, staff): Promise<any> {
-    let updated_staff
+    let updated_staff: Staff;
     try {
-        updated_staff = await this.databaseService.staff.update({
+      updated_staff = await this.databaseService.staff.update({
         data: staff,
         where: { id: staff_id },
+        include: { Account: true },
       });
+      // await this.databaseService.account.update({
+      //   data: { role: staff.role },
+      //   where: { id: updated_staff.Account },
+      // });
+    } catch {
+      return { message: 'FAIL' };
     }
-    catch {
-      return {message: "FAIL"}
-    }
-    let result = {message: "SUCCESS"}
-    if (!updated_staff) result.message = "FAIL";
+    const result = { message: 'SUCCESS' };
+    if (!updated_staff) result.message = 'FAIL';
     return result;
   }
 
