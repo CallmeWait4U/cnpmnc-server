@@ -6,7 +6,6 @@ import { RequestModule } from './Request/request.module';
 import { StaffModule } from './Staff/staff.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ExamModule } from './exam/exam.module';
 
 @Module({
   imports: [
@@ -15,7 +14,6 @@ import { ExamModule } from './exam/exam.module';
     StaffModule,
     AccountModule,
     RequestModule,
-    ExamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
