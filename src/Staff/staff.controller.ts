@@ -39,4 +39,10 @@ export class StaffController {
   async getStaff(@Query('id') staff_id) {
     return this.staffService.getStaff(staff_id);
   }
+
+  @UseGuards(AuthGuard)
+  @Post('/delete-staff')
+  async deleteStaff(@Query('id') staffId) {
+    return this.staffService.deleteStaff(staffId);
+  }
 }

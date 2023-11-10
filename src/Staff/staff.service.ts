@@ -61,4 +61,17 @@ export class StaffService {
     if (!staff) throw new UnauthorizedException();
     return staff;
   }
+
+  async deleteStaff(staffId): Promise<any>{
+    try {
+      await this.databaseService.staff.delete({
+        where: {
+          id: staffId,
+        },
+      });
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
+    return {message: "SUCCESS"};
+  }
 }
