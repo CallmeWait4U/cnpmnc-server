@@ -26,6 +26,9 @@ export class StaffService {
   }
 
   async updateStaff(staff_id, staff): Promise<any> {
+    delete staff.id;
+    // console.log(staff_id);
+    // console.log(staff);
     let updated_staff
     try {
         updated_staff = await this.databaseService.staff.update({
@@ -33,7 +36,8 @@ export class StaffService {
         where: { id: staff_id },
       });
     }
-    catch {
+    catch (error){
+      console.log(error);
       return {message: "FAIL"}
     }
     let result = {message: "SUCCESS"}

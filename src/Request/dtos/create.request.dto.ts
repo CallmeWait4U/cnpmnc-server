@@ -10,10 +10,10 @@ export class CreateRequestDTO {
   readonly reason: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   readonly startDate: Date;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   readonly endDate: Date;
 }
