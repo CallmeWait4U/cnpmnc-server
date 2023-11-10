@@ -4,6 +4,7 @@ import { DatabaseService } from 'libs/database.module';
 import { CreateRequestDTO } from './dtos/create.request.dto';
 import { RequestResponseDto } from './dtos/request.response.dto';
 import { UpdateStatusDTO } from './dtos/update.status.dto';
+import { RequestDto } from './dtos/request.dto';
 
 @Injectable()
 export class RequestService {
@@ -27,6 +28,19 @@ export class RequestService {
     }
     return requests;
   }
+
+
+  async getAllRequest(): Promise<RequestDto[]>{
+    const requests = await this.databaseService.request.findMany();
+    if (!requests) throw new NotFoundException('Request not found');
+    // const requestDTOs: RequestDto[] = [];
+    // for (const request of requests){
+    //   requestDTOs.push(new RequestDto(request));
+    // }
+
+    return requests as RequestDto[];
+  }
+
 
   async createRequest(staff: CreateRequestDTO) {
     const data = {

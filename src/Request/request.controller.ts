@@ -26,4 +26,11 @@ export class RequestController {
   async updateStatus(@Body() statusDTO: UpdateStatusDTO){
     return await this.requestService.updateStatus(statusDTO);
   }
+
+  @UseGuards(AuthGuard)
+  @Get('getAllRequest')
+  async getAllRequest(){
+    const requests = await this.requestService.getAllRequest();
+    return requests;
+  }
 }
