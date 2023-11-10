@@ -33,11 +33,6 @@ export class RequestService {
   async getAllRequest(): Promise<RequestDto[]>{
     const requests = await this.databaseService.request.findMany();
     if (!requests) throw new NotFoundException('Request not found');
-    // const requestDTOs: RequestDto[] = [];
-    // for (const request of requests){
-    //   requestDTOs.push(new RequestDto(request));
-    // }
-
     return requests as RequestDto[];
   }
 
