@@ -28,7 +28,9 @@ model Admin {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   avatar      String
   name        String
+  gender      String
   code        String
+  birthday    DateTime
   position    String
   department  String
   phoneNumber String
@@ -41,7 +43,9 @@ model Staff {
   id           String       @id @default(auto()) @map("_id") @db.ObjectId
   avatar       String
   name         String
+  gender       String
   code         String
+  birthday     DateTime
   position     String
   department   String
   phoneNumber  String
