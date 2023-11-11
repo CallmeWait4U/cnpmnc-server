@@ -67,14 +67,14 @@ model TimeObject {
 }
 
 model Request {
-  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   reason    String
   startDate DateTime
   endDate   DateTime
-  status    StatusRequest
-  Staff     Staff         @relation(fields: [staffId], references: [id])
-  staffId   String        @db.ObjectId
+  status    String
+  Staff     Staff    @relation(fields: [staffId], references: [id])
+  staffId   String   @db.ObjectId
 }
 
 model Notification {
@@ -89,10 +89,4 @@ model Notification {
 enum Role {
   ADMIN @map("ADMIN")
   STAFF @map("STAFF")
-}
-
-enum StatusRequest {
-  PENDING @map("PENDING")
-  ACCEPT  @map("ACCEPT")
-  REJECT  @map("REJECT")
 }
