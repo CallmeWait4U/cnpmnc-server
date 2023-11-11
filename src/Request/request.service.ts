@@ -101,14 +101,17 @@ export class RequestService {
         }, 
       });
 
-      await this.databaseService.staff.update({
-        where: {
-          id: staffId,
-        },
-        data: {
-          numLeaveDays: rmt,
-        }, 
-      });
+      if (statusDTO.status === "ACCEPT")
+      {
+        await this.databaseService.staff.update({
+          where: {
+            id: staffId,
+          },
+          data: {
+            numLeaveDays: rmt,
+          }, 
+        });
+      }
     } catch {
       return { message: 'FAIL' };
     }
