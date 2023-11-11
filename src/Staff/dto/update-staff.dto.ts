@@ -23,6 +23,6 @@ export class UpdateStaffDto extends PartialType(CreateStaffDto) {
   @IsString()  
   readonly address?:string;
 
-  @IsString()
-  readonly role: string;
+  // @IsString()
+  // readonly role: string;
 }
