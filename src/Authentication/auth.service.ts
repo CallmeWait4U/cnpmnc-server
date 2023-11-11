@@ -38,7 +38,7 @@ export class AuthService {
     if (!bcrypt.compareSync(password, user.password)) {
       throw new UnauthorizedException();
     }
-    const payload = { sub: user.id, username: user.username };
+    const payload = { sub: user.id, username: user.username, role: user.role };
     const access_token = await this.jwtService.signAsync(payload);
 
     await this.databaseService.account.update({

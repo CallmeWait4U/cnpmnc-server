@@ -11,14 +11,15 @@ import { AuthGuard } from 'src/Authentication/auth.guard';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { StaffService } from './staff.service';
+import { RoleGuard } from 'src/Authentication/role.guard';
 
 @Controller('staffs')
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
-  @UseGuards(AuthGuard)
+  @UseGuards(RoleGuard)
   @Get('/getAll')
-  async getAllStaff(@Request() req) {
-    return this.staffService.getAllStaff(req.user.sub);
+  async getAllStaff() {
+    return this.staffService.getAllStaff();
   }
 
   @UseGuards(AuthGuard)

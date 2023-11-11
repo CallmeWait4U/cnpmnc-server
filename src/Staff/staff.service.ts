@@ -17,15 +17,33 @@ export class StaffService {
     private authService: AuthService,
   ) {}
 
-  async getAllStaff(user_id): Promise<any> {
-    const currentUser = await this.databaseService.account.findFirst({
-      where: { id: user_id },
-    });
-    if (!(currentUser.role == Role.ADMIN)) {
-      throw new ForbiddenException();
+  async getAllStaff(): Promise<any> {
+    let staffs = []
+    try {
+      staffs = await this.databaseService.staff.findMany({
+        select: {
+          id: true,
+          name: true,
+          code: true,
+          position: true,
+          department: true,
+          birthday: true,
+          gender: true,
+          address: true,
+          Account: true
+        }
+      });
     }
-    const staffs = await this.databaseService.staff.findMany();
-
+    catch (error) {
+      console.log(error);
+      return {message: 'FAIL'}
+    }
+    console.log(staffs)
+    staffs = staffs.map(({Account, ...rest}) => {
+      // console.log(Account)
+      return {...rest, role: Account[0].role}
+    })
+    console.log(staffs)
     return staffs;
   }
 
