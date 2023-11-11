@@ -9,7 +9,6 @@ export class StatisticService {
     const dateNow = new Date();
     const dateAgo = new Date();
     dateAgo.setUTCMonth(dateNow.getUTCMonth() - month);
-    // console.log(dateAgo, dateNow);
     const statusStatistics = await this.databaseService.request.groupBy({
       by: ['status'],
       _count: { status: true },

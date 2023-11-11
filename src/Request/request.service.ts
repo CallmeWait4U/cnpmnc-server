@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { DatabaseService } from 'libs/database.module';
 import { CreateRequestDTO } from './dtos/create.request.dto';
-import { RequestDto } from './dtos/request.dto';
 import { RequestResponseDto } from './dtos/request.response.dto';
 import { UpdateStatusDTO } from './dtos/update.status.dto';
+import { request } from 'http';
 
 @Injectable()
 export class RequestService {
@@ -58,8 +58,8 @@ export class RequestService {
     const data = {
       title: 'test',
       reason: staff.reason,
-      startDate: staff.startDate,
-      endDate: staff.endDate,
+      startDate: new Date(staff.startDate),
+      endDate: new Date(staff.endDate),
       status: 'PENDING',
     };
     
@@ -74,6 +74,23 @@ export class RequestService {
   }
 
   async updateStatus(statusDTO: UpdateStatusDTO) {
+    const request_need_update = await this.databaseService.request.findFirst({
+      where: {
+        id: statusDTO.id,
+      },
+      include: {
+        Staff: true
+      }
+    })
+    // console.log(request_need_update);
+    const startDate = new Date(request_need_update.startDate).getTime()
+    const endDate = new Date(request_need_update.endDate).getTime()
+    const days = (endDate - startDate) / (3600 * 24 * 1000)
+    // console.log(days)
+    const staffId = request_need_update.staffId
+    let rmt = request_need_update.Staff.numLeaveDays
+    rmt = (rmt < days)? 0 : (rmt - days);
+
     try {
       await this.databaseService.request.update({
         where: {
@@ -81,7 +98,16 @@ export class RequestService {
         },
         data: {
           status: statusDTO.status,
+        }, 
+      });
+
+      await this.databaseService.staff.update({
+        where: {
+          id: staffId,
         },
+        data: {
+          numLeaveDays: rmt,
+        }, 
       });
     } catch {
       return { message: 'FAIL' };
