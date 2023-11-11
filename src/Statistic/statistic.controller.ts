@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/Authentication/auth.guard';
 import { StatisticService } from './statistic.service';
 
@@ -8,8 +8,9 @@ export class StatisticController {
 
   @UseGuards(AuthGuard)
   @Get('status')
-  async getStatusStatistics() {
-    const statusStatistics = await this.statisticService.getStatusStatistics();
+  async getStatusStatistics(@Query('month') month: number) {
+    const statusStatistics =
+      await this.statisticService.getStatusStatistics(month);
     return statusStatistics;
   }
 }
