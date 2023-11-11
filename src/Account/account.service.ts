@@ -24,7 +24,6 @@ export class AccountService {
       where: { id: account.staffId },
     });
     // }
-
-    return info;
+    return { ...info, role: account.role };
   }
 }

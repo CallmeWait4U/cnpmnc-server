@@ -16,22 +16,22 @@ export class AuthService {
 
   async createAccount(username: string, password: string): Promise<any> {
     const passwordHashed = await bcrypt.hash(password, this.saltOrRounds);
-    let old_user = await this.databaseService.account.findFirst({
+    const old_user = await this.databaseService.account.findFirst({
       where: { username },
     });
     if (old_user) throw new UnauthorizedException();
-    let user = await this.databaseService.account.create({
+    const user = await this.databaseService.account.create({
       data: {
         username: username,
         password: passwordHashed,
         role: Role.STAFF,
       },
     });
-    return user.username;
+    return user;
   }
 
   async signIn(username: string, password: string): Promise<any> {
-    let user = await this.databaseService.account.findFirst({
+    const user = await this.databaseService.account.findFirst({
       where: { username },
     });
     if (!user) throw new UnauthorizedException();
