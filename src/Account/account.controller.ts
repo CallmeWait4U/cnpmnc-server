@@ -9,7 +9,6 @@ export class AccountController {
   @UseGuards(AuthGuard)
   @Get('/info')
   async getInformation(@Request() req) {
-    // console.log(req.user.sub);
     return this.accountService.getInformation(req.user.sub);
   }
 }

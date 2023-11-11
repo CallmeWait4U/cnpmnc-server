@@ -31,7 +31,7 @@ export class CreateStaffDto {
 
   @IsNotEmpty()
   @IsDateString()
-  readonly birthday: Date;
+  birthday: Date;
 
   @IsNotEmpty()
   @IsString()
