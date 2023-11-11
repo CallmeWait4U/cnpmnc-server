@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker/locale/vi';
 import {
   ForbiddenException,
   Injectable,
@@ -5,10 +6,16 @@ import {
 } from '@nestjs/common';
 import { Role, Staff } from '@prisma/client';
 import { DatabaseService } from 'libs/database.module';
+import { AuthService } from 'src/Authentication/auth.service';
+import { CreateStaffDto } from './dto/create-staff.dto';
 
 @Injectable()
 export class StaffService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  // @Inject() ;
+  constructor(
+    private readonly databaseService: DatabaseService,
+    private authService: AuthService,
+  ) {}
 
   async getAllStaff(user_id): Promise<any> {
     const currentUser = await this.databaseService.account.findFirst({
@@ -22,13 +29,21 @@ export class StaffService {
     return staffs;
   }
 
-  async createStaff(staff): Promise<any> {
+  async createStaff(
+    username: string,
+    password: string,
+    staff: CreateStaffDto,
+  ): Promise<any> {
     staff.birthday = new Date(staff.birthday);
-    staff.numLeaveDays = 20;
+    const createdAccount = await this.authService.createAccount(
+      username,
+      password,
+    );
     const created_staff = await this.databaseService.staff.create({
       data: {
         ...staff,
-        // Account: { connect: { id: '654b8d41f23b3e78021febbc' } },
+        numLeaveDays: 20,
+        Account: { connect: { id: createdAccount.id } },
       },
     });
     return created_staff;
@@ -36,8 +51,6 @@ export class StaffService {
 
   async updateStaff(staff_id, staff): Promise<any> {
     delete staff.id;
-    // console.log(staff_id);
-    // console.log(staff);
     let updated_staff: Staff;
     try {
       updated_staff = await this.databaseService.staff.update({
@@ -45,10 +58,6 @@ export class StaffService {
         where: { id: staff_id },
         include: { Account: true },
       });
-      // await this.databaseService.account.update({
-      //   data: { role: staff.role },
-      //   where: { id: updated_staff.Account },
-      // });
     } catch {
       return { message: 'FAIL' };
     }
@@ -65,7 +74,7 @@ export class StaffService {
     return staff;
   }
 
-  async deleteStaff(staffId): Promise<any>{
+  async deleteStaff(staffId): Promise<any> {
     try {
       await this.databaseService.staff.delete({
         where: {
@@ -75,6 +84,26 @@ export class StaffService {
     } catch (error) {
       throw new UnauthorizedException();
     }
-    return {message: "SUCCESS"};
+    return { message: 'SUCCESS' };
+  }
+
+  async fakeData() {
+    const pros: Promise<any>[] = [];
+    for (let i = 0; i < 20; i++) {
+      const phone = faker.phone.number().split(' ').join('');
+      const data: CreateStaffDto = {
+        avatar: faker.image.avatar(),
+        name: faker.person.fullName(),
+        gender: faker.helpers.arrayElement(['Nam', 'Nữ']),
+        code: faker.string.uuid(),
+        position: faker.person.jobTitle(),
+        department: faker.person.jobArea(),
+        phoneNumber: phone,
+        birthday: faker.date.past(),
+        address: faker.location.streetAddress(),
+      };
+      pros.push(this.createStaff(phone, '123456', data));
+    }
+    await Promise.all(pros);
   }
 }

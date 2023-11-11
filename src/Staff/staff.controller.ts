@@ -23,8 +23,12 @@ export class StaffController {
 
   @UseGuards(AuthGuard)
   @Post('create')
-  async createStaff(@Body() staffInfo: CreateStaffDto): Promise<any> {
-    return await this.staffService.createStaff(staffInfo);
+  async createStaff(
+    @Body('username') username: string,
+    @Body('password') password: string,
+    @Body() staffInfo: CreateStaffDto,
+  ): Promise<any> {
+    return await this.staffService.createStaff(username, password, staffInfo);
   }
 
   @UseGuards(AuthGuard)
@@ -44,5 +48,10 @@ export class StaffController {
   @Post('/delete-staff')
   async deleteStaff(@Query('id') staffId) {
     return this.staffService.deleteStaff(staffId);
+  }
+
+  @Get('/fakeDate')
+  async fakeDate() {
+    return this.staffService.fakeData();
   }
 }
