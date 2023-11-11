@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/Authentication/auth.guard';
 import { CreateRequestDTO } from './dtos/create.request.dto';
-import { RequestService } from './request.service';
 import { UpdateStatusDTO } from './dtos/update.status.dto';
+import { RequestService } from './request.service';
 
 @Controller('request')
 export class RequestController {
@@ -23,13 +23,13 @@ export class RequestController {
 
   @UseGuards(AuthGuard)
   @Post('update-status')
-  async updateStatus(@Body() statusDTO: UpdateStatusDTO){
+  async updateStatus(@Body() statusDTO: UpdateStatusDTO) {
     return await this.requestService.updateStatus(statusDTO);
   }
 
   @UseGuards(AuthGuard)
   @Get('getAllRequest')
-  async getAllRequest(){
+  async getAllRequest() {
     const requests = await this.requestService.getAllRequest();
     return requests;
   }
