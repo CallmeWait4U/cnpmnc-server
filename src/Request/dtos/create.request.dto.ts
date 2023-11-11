@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateRequestDTO {
   @IsNotEmpty()
@@ -10,10 +10,10 @@ export class CreateRequestDTO {
   readonly reason: string;
 
   @IsNotEmpty()
-  @IsDateString()
-  readonly startDate: Date;
+  // @IsDateString()
+  readonly startDate: string;
 
   @IsNotEmpty()
-  @IsDateString()
-  readonly endDate: Date;
+  // @IsDateString()
+  readonly endDate: string;
 }

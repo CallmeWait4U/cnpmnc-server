@@ -58,21 +58,18 @@ export class RequestService {
     const data = {
       title: 'test',
       reason: staff.reason,
-      startDate: staff.startDate,
-      endDate: staff.endDate,
+      startDate: new Date(staff.startDate),
+      endDate: new Date(staff.endDate),
       status: 'PENDING',
     };
-    try {
-      await this.databaseService.request.create({
-        data: {
-          ...data,
-          Staff: { connect: { id: staff.id } },
-        },
-      });
-    } catch {
-      return { message: 'FAIL' };
-    }
-    return { message: 'SUCCESS' };
+
+    const request = await this.databaseService.request.create({
+      data: {
+        ...data,
+        Staff: { connect: { id: staff.id } },
+      },
+    });
+    return request;
   }
 
   async updateStatus(statusDTO: UpdateStatusDTO) {
