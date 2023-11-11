@@ -72,7 +72,7 @@ model Request {
   reason    String
   startDate DateTime
   endDate   DateTime
-  status    StatusRequest
+  status    String
   Staff     Staff         @relation(fields: [staffId], references: [id])
   staffId   String        @db.ObjectId
 }
@@ -91,8 +91,4 @@ enum Role {
   STAFF @map("STAFF")
 }
 
-enum StatusRequest {
-  PENDING @map("PENDING")
-  ACCEPT  @map("ACCEPT")
-  REJECT  @map("REJECT")
-}
+

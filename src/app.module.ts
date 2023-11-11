@@ -5,6 +5,7 @@ import { ChangepassModule } from './Account/changepass.module';
 import { AuthModule } from './Authentication/auth.module';
 import { RequestModule } from './Request/request.module';
 import { StaffModule } from './Staff/staff.module';
+import { StatisticModule } from './Statistic/statistic.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -16,6 +17,7 @@ import { AppService } from './app.service';
     AccountModule,
     ChangepassModule,
     RequestModule,
+    StatisticModule,
   ],
   controllers: [AppController],
   providers: [AppService],
