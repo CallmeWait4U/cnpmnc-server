@@ -29,7 +29,7 @@ export class RequestService {
     return requests;
   }
 
-  async getAllRequest(): Promise<RequestDto[]> {
+  async getAllRequest(): Promise<RequestResponseDto[]> {
     const requests = await this.databaseService.request.findMany({
       include: {
         Staff: {
@@ -42,9 +42,9 @@ export class RequestService {
       },
     });
     if (!requests) throw new NotFoundException('Request not found');
-    let results: RequestDto[] = requests.map(({ Staff, ...rest }) => {
+    let results: RequestResponseDto[] = requests.map(({ Staff, ...rest }) => {
       return plainToClass(
-        RequestDto,
+        RequestResponseDto,
         { ...Staff, ...rest },
         { excludeExtraneousValues: true },
       );
