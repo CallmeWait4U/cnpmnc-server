@@ -13,17 +13,9 @@ export class AccountService {
     if (!account) throw new UnauthorizedException();
 
     let info = null;
-    // console.log(account);
-    // if (account.role === Role.ADMIN) {
-    //   info = await this.databaseService.admin.findFirst({
-    //     where: { id: account.adminId },
-    //   });
-    // }
-    // if (account.role == Role.STAFF) {
     info = await this.databaseService.staff.findFirst({
       where: { id: account.staffId },
     });
-    // }
     return { ...info, role: account.role };
   }
 }

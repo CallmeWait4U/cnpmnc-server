@@ -4,7 +4,6 @@ import { DatabaseService } from 'libs/database.module';
 import { CreateRequestDTO } from './dtos/create.request.dto';
 import { RequestResponseDto } from './dtos/request.response.dto';
 import { UpdateStatusDTO } from './dtos/update.status.dto';
-import { request } from 'http';
 
 @Injectable()
 export class RequestService {
@@ -42,7 +41,7 @@ export class RequestService {
       },
     });
     if (!requests) throw new NotFoundException('Request not found');
-    let results: RequestResponseDto[] = requests.map(({ Staff, ...rest }) => {
+    const results: RequestResponseDto[] = requests.map(({ Staff, ...rest }) => {
       return plainToClass(
         RequestResponseDto,
         { ...Staff, ...rest },
@@ -62,14 +61,14 @@ export class RequestService {
       endDate: new Date(staff.endDate),
       status: 'PENDING',
     };
-    
+
     await this.databaseService.request.create({
       data: {
         ...data,
         Staff: { connect: { id: staff.id } },
       },
     });
-    
+
     return { message: 'SUCCESS' };
   }
 
@@ -79,17 +78,15 @@ export class RequestService {
         id: statusDTO.id,
       },
       include: {
-        Staff: true
-      }
-    })
-    // console.log(request_need_update);
-    const startDate = new Date(request_need_update.startDate).getTime()
-    const endDate = new Date(request_need_update.endDate).getTime()
-    const days = (endDate - startDate) / (3600 * 24 * 1000)
-    // console.log(days)
-    const staffId = request_need_update.staffId
-    let rmt = request_need_update.Staff.numLeaveDays
-    rmt = (rmt < days)? 0 : (rmt - days);
+        Staff: true,
+      },
+    });
+    const startDate = new Date(request_need_update.startDate).getTime();
+    const endDate = new Date(request_need_update.endDate).getTime();
+    const days = (endDate - startDate) / (3600 * 24 * 1000);
+    const staffId = request_need_update.staffId;
+    let rmt = request_need_update.Staff.numLeaveDays;
+    rmt = rmt < days ? 0 : rmt - days;
 
     try {
       await this.databaseService.request.update({
@@ -98,18 +95,17 @@ export class RequestService {
         },
         data: {
           status: statusDTO.status,
-        }, 
+        },
       });
 
-      if (statusDTO.status === "ACCEPT")
-      {
+      if (statusDTO.status === 'ACCEPT') {
         await this.databaseService.staff.update({
           where: {
             id: staffId,
           },
           data: {
             numLeaveDays: rmt,
-          }, 
+          },
         });
       }
     } catch {

@@ -1,24 +1,19 @@
 import { faker } from '@faker-js/faker/locale/vi';
-import {
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { Role, Staff } from '@prisma/client';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Staff } from '@prisma/client';
 import { DatabaseService } from 'libs/database.module';
 import { AuthService } from 'src/Authentication/auth.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
 
 @Injectable()
 export class StaffService {
-  // @Inject() ;
   constructor(
     private readonly databaseService: DatabaseService,
     private authService: AuthService,
   ) {}
 
   async getAllStaff(): Promise<any> {
-    let staffs = []
+    let staffs = [];
     try {
       staffs = await this.databaseService.staff.findMany({
         select: {
@@ -30,20 +25,19 @@ export class StaffService {
           birthday: true,
           gender: true,
           address: true,
-          Account: true
-        }
+          Account: true,
+        },
       });
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
-      return {message: 'FAIL'}
+      return { message: 'FAIL' };
     }
-    console.log(staffs)
-    staffs = staffs.map(({Account, ...rest}) => {
+    console.log(staffs);
+    staffs = staffs.map(({ Account, ...rest }) => {
       // console.log(Account)
-      return {...rest, role: Account[0].role}
-    })
-    console.log(staffs)
+      return { ...rest, role: Account[0].role };
+    });
+    console.log(staffs);
     return staffs;
   }
 
@@ -100,7 +94,7 @@ export class StaffService {
         },
       });
     } catch (error) {
-      return {message: 'FAIL'};
+      return { message: 'FAIL' };
     }
     return { message: 'SUCCESS' };
   }

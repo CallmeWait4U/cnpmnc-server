@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/Authentication/auth.guard';
-import { StatisticService } from './statistic.service';
 import { RoleGuard } from 'src/Authentication/role.guard';
+import { StatisticService } from './statistic.service';
 
 @Controller('statistic')
 export class StatisticController {
@@ -17,7 +17,7 @@ export class StatisticController {
 
   @UseGuards(RoleGuard)
   @Get('dayoff')
-  async getDayoff(@Query('month') month: number){
+  async getDayoff(@Query('month') month: number) {
     const dayoff = await this.statisticService.getDayOff(month);
     return dayoff;
   }
