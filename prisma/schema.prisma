@@ -67,14 +67,14 @@ model TimeObject {
 }
 
 model Request {
-  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   reason    String
   startDate DateTime
   endDate   DateTime
   status    String
-  Staff     Staff         @relation(fields: [staffId], references: [id])
-  staffId   String        @db.ObjectId
+  Staff     Staff    @relation(fields: [staffId], references: [id])
+  staffId   String   @db.ObjectId
 }
 
 model Notification {
