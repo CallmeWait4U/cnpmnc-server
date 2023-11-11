@@ -100,7 +100,7 @@ export class StaffService {
         },
       });
     } catch (error) {
-      throw new UnauthorizedException();
+      return {message: 'FAIL'};
     }
     return { message: 'SUCCESS' };
   }
