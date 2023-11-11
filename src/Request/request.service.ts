@@ -62,16 +62,14 @@ export class RequestService {
       endDate: staff.endDate,
       status: 'PENDING',
     };
-    try {
-      await this.databaseService.request.create({
-        data: {
-          ...data,
-          Staff: { connect: { id: staff.id } },
-        },
-      });
-    } catch {
-      return { message: 'FAIL' };
-    }
+    
+    await this.databaseService.request.create({
+      data: {
+        ...data,
+        Staff: { connect: { id: staff.id } },
+      },
+    });
+    
     return { message: 'SUCCESS' };
   }
 
