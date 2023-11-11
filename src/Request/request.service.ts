@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { DatabaseService } from 'libs/database.module';
 import { CreateRequestDTO } from './dtos/create.request.dto';
-import { RequestDto } from './dtos/request.dto';
 import { RequestResponseDto } from './dtos/request.response.dto';
 import { UpdateStatusDTO } from './dtos/update.status.dto';
 
@@ -63,13 +62,17 @@ export class RequestService {
       status: 'PENDING',
     };
 
-    const request = await this.databaseService.request.create({
-      data: {
-        ...data,
-        Staff: { connect: { id: staff.id } },
-      },
-    });
-    return request;
+    try {
+      const request = await this.databaseService.request.create({
+        data: {
+          ...data,
+          Staff: { connect: { id: staff.id } },
+        },
+      });
+    } catch {
+      return { message: 'FAIL' };
+    }
+    return { message: 'SUCCESS' };
   }
 
   async updateStatus(statusDTO: UpdateStatusDTO) {
