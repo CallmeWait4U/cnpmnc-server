@@ -1,13 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateStatusDTO {
+export class DetailRequestDTO {
   @ApiProperty({ type: String, description: 'requestId' })
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   readonly id: string;
-
-  @IsNotEmpty()
-  @IsString()
-  readonly status: string;
 }

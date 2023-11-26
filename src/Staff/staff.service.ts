@@ -41,19 +41,26 @@ export class StaffService {
     return staffs;
   }
 
-  async createStaff(
-    username: string,
-    password: string,
-    staff: CreateStaffDto,
-  ): Promise<any> {
+  async createStaff(staff: CreateStaffDto): Promise<any> {
     staff.birthday = new Date(staff.birthday);
     const createdAccount = await this.authService.createAccount(
-      username,
-      password,
+      staff.username,
+      staff.password,
     );
+    const data = {
+      avatar: staff.avatar,
+      name: staff.name,
+      gender: staff.gender,
+      code: staff.code,
+      position: staff.position,
+      department: staff.department,
+      phoneNumber: staff.phoneNumber,
+      birthday: staff.birthday,
+      address: staff.address,
+    };
     const created_staff = await this.databaseService.staff.create({
       data: {
-        ...staff,
+        ...data,
         numLeaveDays: 20,
         Account: { connect: { id: createdAccount.id } },
       },
@@ -113,8 +120,10 @@ export class StaffService {
         phoneNumber: phone,
         birthday: faker.date.past(),
         address: faker.location.streetAddress(),
+        username: phone,
+        password: '123456',
       };
-      pros.push(this.createStaff(phone, '123456', data));
+      pros.push(this.createStaff(data));
     }
     await Promise.all(pros);
   }

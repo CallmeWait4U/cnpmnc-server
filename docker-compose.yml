@@ -1,0 +1,44 @@
+version: '3.9'
+
+networks:
+  gateway-network:
+    # external: true
+    
+volumes:
+  tenten-server:
+  # mongodb-data:
+
+services:
+  # local-mongodb:
+  #   image: 'bitnami/mongodb:6.0.4-debian-11-r11'
+  #   container_name: local-mongodb
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - mongodb-data:/bitnami/mongodb
+  #   environment:
+  #     - TZ=Asia/Ho_Chi_Minh
+  #     - MONGODB_ADVERTISED_HOSTNAME=local-mongodb
+  #     - MONGODB_PORT_NUMBER=27017
+  #     - MONGODB_REPLICA_SET_MODE=primary
+  #     - MONGODB_REPLICA_SET_NAME=rs0
+  #     - MONGODB_ROOT_PASSWORD=abc12345
+  #     - MONGODB_REPLICA_SET_KEY=replicasetkey123
+  #   networks:
+  #     - gateway-network
+  tenten_server:
+    container_name: tenten_server
+    image: tenten_server:1.0.0
+    build:
+        context: .
+        target: development
+        dockerfile: ./Dockerfile
+    command: pnpm start:dev
+    ports:
+        - 3000:3000
+    networks:
+        - gateway-network
+    volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+    restart: unless-stopped

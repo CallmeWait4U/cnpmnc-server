@@ -1,17 +1,21 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/Authentication/auth.guard';
 import { CreateRequestDTO } from './dtos/create.request.dto';
+import { DetailRequestDTO } from './dtos/detail.request.dto';
 import { UpdateStatusDTO } from './dtos/update.status.dto';
 import { RequestService } from './request.service';
 
+@ApiBearerAuth()
+@ApiTags('request')
 @Controller('request')
 export class RequestController {
   constructor(private readonly requestService: RequestService) {}
 
   @UseGuards(AuthGuard)
   @Get('getPersonal')
-  async getPersonalRequest(@Query('id') staffId: string) {
-    const requests = await this.requestService.getPersonalRequest(staffId);
+  async getPersonalRequest(@Query() staff: DetailRequestDTO) {
+    const requests = await this.requestService.getPersonalRequest(staff.id);
     return requests;
   }
 

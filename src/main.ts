@@ -16,11 +16,13 @@ async function bootstrap() {
     }),
   );
 
-  const config = new DocumentBuilder().setTitle('Server API').build();
+  const config = new DocumentBuilder()
+    .addBearerAuth()
+    .setTitle('Server API')
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
   await app.listen(3000);
 }
 bootstrap();
-// DATABASE_URL="mongodb+srv://cnpm:48694869@cnpmnc.drtz6gs.mongodb.net/cnpm-database"
