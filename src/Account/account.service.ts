@@ -6,7 +6,7 @@ export class AccountService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async getInformation(account_id) {
-    console.log(account_id);
+    // console.log(account_id);
     const account = await this.databaseService.account.findFirst({
       where: { id: account_id },
     });

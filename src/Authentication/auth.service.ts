@@ -50,4 +50,11 @@ export class AuthService {
       access_token,
     };
   }
+
+  async signOut(userId: string) {
+    await this.databaseService.account.update({
+      data: { token: null },
+      where: { id: userId },
+    });
+  }
 }
