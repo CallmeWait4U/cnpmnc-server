@@ -81,6 +81,7 @@ model Notification {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String
+  status    String
   time      DateTime
   Account   Account  @relation(fields: [accountId], references: [id])
   accountId String   @db.ObjectId
@@ -90,5 +91,3 @@ enum Role {
   ADMIN @map("ADMIN")
   STAFF @map("STAFF")
 }
-
-
