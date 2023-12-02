@@ -1,6 +1,6 @@
 import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/Authentication/auth.guard';
+import { AuthGuard } from '../Authentication/auth.guard';
 import { AccountService } from './account.service';
 
 @ApiBearerAuth()
