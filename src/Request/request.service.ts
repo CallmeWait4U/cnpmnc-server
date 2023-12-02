@@ -4,11 +4,11 @@ import { DatabaseService } from 'libs/database.module';
 import { CreateRequestDTO } from './dtos/create.request.dto';
 import { RequestResponseDto } from './dtos/request.response.dto';
 import { UpdateStatusDTO } from './dtos/update.status.dto';
-
+import { SocketGateway } from '../socket.gateway';
 @Injectable()
 export class RequestService {
+  private socketGateway: SocketGateway;
   constructor(private readonly databaseService: DatabaseService) {}
-
   async getPersonalRequest(staffId) {
     const staff = await this.databaseService.staff.findFirst({
       where: { id: staffId },
@@ -48,8 +48,8 @@ export class RequestService {
         { excludeExtraneousValues: true },
       );
     });
-    console.log(results);
     // return plainToClass(results, )
+    this.socketGateway.sendToAll();
     return results;
   }
 
