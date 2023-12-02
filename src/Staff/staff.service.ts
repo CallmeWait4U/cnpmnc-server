@@ -95,12 +95,22 @@ export class StaffService {
 
   async deleteStaff(staffId): Promise<any> {
     try {
+      await this.databaseService.request.deleteMany({
+        where: {
+          staffId: staffId, 
+        }
+      })
+    } catch (error){
+      return {message: "FAIL"}
+    }
+    try {
       await this.databaseService.staff.delete({
         where: {
           id: staffId,
         },
       });
     } catch (error) {
+      console.log(error)
       return { message: 'FAIL' };
     }
     return { message: 'SUCCESS' };
