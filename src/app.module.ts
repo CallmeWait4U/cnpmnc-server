@@ -8,7 +8,7 @@ import { StaffModule } from './Staff/staff.module';
 import { StatisticModule } from './Statistic/statistic.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { SocketModule } from './socket.modules';
+import { SocketModule } from './socket.modules'; // Sang
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { AppService } from './app.service';
     ChangepassModule,
     RequestModule,
     StatisticModule,
-    // SocketModule, //Sang
+    SocketModule, //Sang
   ],
   controllers: [AppController],
   providers: [AppService],
