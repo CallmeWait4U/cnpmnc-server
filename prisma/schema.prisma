@@ -40,7 +40,7 @@ model Admin {
 }
 
 model Staff {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
   avatar       String
   name         String
   gender       String
@@ -54,8 +54,9 @@ model Staff {
   leaveHistory TimeObject[]
   Account      Account[]
   Request      Request[]
-  Admin        Admin?       @relation(fields: [adminId], references: [id])
-  adminId      String?      @db.ObjectId
+  Notification Notification[]
+  Admin        Admin?         @relation(fields: [adminId], references: [id])
+  adminId      String?        @db.ObjectId
 }
 
 model TimeObject {
@@ -83,8 +84,10 @@ model Notification {
   content   String
   status    String
   time      DateTime
-  Account   Account  @relation(fields: [accountId], references: [id])
-  accountId String   @db.ObjectId
+  Account   Account? @relation(fields: [accountId], references: [id])
+  accountId String?  @db.ObjectId
+  Staff     Staff?   @relation(fields: [staffId], references: [id])
+  staffId   String?  @db.ObjectId
 }
 
 enum Role {
