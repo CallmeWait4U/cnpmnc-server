@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/Authentication/auth.guard';
-import { RoleGuard } from 'src/Authentication/role.guard';
+import { AuthGuard } from '../Authentication/auth.guard';
+import { RoleGuard } from '../Authentication/role.guard';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { DetailStaffDTO } from './dto/detail.staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';

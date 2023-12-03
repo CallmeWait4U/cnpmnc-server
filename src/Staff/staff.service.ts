@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker/locale/vi';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Staff } from '@prisma/client';
-import { DatabaseService } from 'libs/database.module';
-import { AuthService } from 'src/Authentication/auth.service';
+import { DatabaseService } from '../../libs/database.module';
+import { AuthService } from '../Authentication/auth.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
 
 @Injectable()
@@ -97,11 +97,11 @@ export class StaffService {
     try {
       await this.databaseService.request.deleteMany({
         where: {
-          staffId: staffId, 
-        }
-      })
-    } catch (error){
-      return {message: "FAIL"}
+          staffId: staffId,
+        },
+      });
+    } catch (error) {
+      return { message: 'FAIL' };
     }
     try {
       await this.databaseService.staff.delete({
@@ -110,7 +110,7 @@ export class StaffService {
         },
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return { message: 'FAIL' };
     }
     return { message: 'SUCCESS' };

@@ -31,7 +31,7 @@ describe('AccountController', () => {
   });
 
   describe('getInformation', () => {
-    it('should return account information', async () => {
+    it('should return user information', async () => {
       const mockAccountInfo = { name: 'John Doe', role: 'user' };
       const mockReq = { user: { sub: 'user_id' } };
 
