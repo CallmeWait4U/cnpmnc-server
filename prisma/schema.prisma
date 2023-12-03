@@ -21,7 +21,6 @@ model Account {
   Staff    Staff?  @relation(fields: [staffId], references: [id])
   staffId  String? @db.ObjectId
 
-  Notification Notification[]
 }
 
 model Admin {
@@ -56,6 +55,8 @@ model Staff {
   Request      Request[]
   Admin        Admin?       @relation(fields: [adminId], references: [id])
   adminId      String?      @db.ObjectId
+
+  Notification Notification[]
 }
 
 model TimeObject {
@@ -83,8 +84,8 @@ model Notification {
   content   String
   status    String
   time      DateTime
-  Account   Account  @relation(fields: [accountId], references: [id])
-  accountId String   @db.ObjectId
+  Staff   Staff  @relation(fields: [staffId], references: [id])
+  staffId String   @db.ObjectId
 }
 
 enum Role {
