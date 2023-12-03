@@ -64,6 +64,40 @@ describe('StaffController', () => {
     });
   });
 
+  describe('updateStaff', () => {
+    it('should return success message', async () => {
+      const mockStaff = {
+        id: 'staffId',
+        avatar: 'avatar',
+        name: 'staffName',
+        gender: 'staffGender',
+        code: 'staffCode',
+        position: 'staffPosition',
+        department: 'staffDepartment',
+        phoneNumber: 'staffPhoneNumber',
+        birthday: new Date(),
+        address: 'staffAddress',
+      };
+      const mockReq: CreateStaffDto = {
+        avatar: 'avatar',
+        name: 'staffName',
+        gender: 'staffGender',
+        code: 'staffCode',
+        position: 'staffPosition',
+        department: 'staffDepartment',
+        phoneNumber: 'staffPhoneNumber',
+        birthday: new Date(),
+        address: 'staffAddress',
+        username: 'username',
+        password: 'password',
+      };
+
+      jest.spyOn(staffService, 'createStaff').mockResolvedValue(mockStaff);
+
+      expect(await staffController.createStaff(mockReq)).toBe(mockStaff);
+    });
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });

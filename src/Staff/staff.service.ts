@@ -69,6 +69,7 @@ export class StaffService {
   }
 
   async updateStaff(staff_id, staff): Promise<any> {
+    console.log(staff)
     delete staff.id;
     let updated_staff: Staff;
     try {
@@ -77,7 +78,8 @@ export class StaffService {
         where: { id: staff_id },
         include: { Account: true },
       });
-    } catch {
+    } catch (error){
+      console.log(error)
       return { message: 'FAIL' };
     }
     const result = { message: 'SUCCESS' };

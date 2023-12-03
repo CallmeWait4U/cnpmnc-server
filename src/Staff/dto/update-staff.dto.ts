@@ -1,7 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { CreateStaffDto } from './create-staff.dto';
+import { Transform, Type } from 'class-transformer';
 
 export class UpdateStaffDto extends PartialType(CreateStaffDto) {
   @ApiProperty({ type: String, description: 'staffId' })
@@ -11,6 +12,8 @@ export class UpdateStaffDto extends PartialType(CreateStaffDto) {
 
   @ApiProperty({ example: '01-01-1998', type: String })
   @IsOptional()
+  // @Transform((value: String) => new Date(value))
+  @Type(() => Date)
   @IsDate()
   readonly birthday?: Date;
 
