@@ -26,5 +26,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
     - run: pnpm install --no-frozen-lockfile
+    - run: pnpm prisma generate
     - run: pnpm build
     - run: pnpm test
