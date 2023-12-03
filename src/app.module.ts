@@ -23,7 +23,7 @@ import { SocketModule } from './socket.modules'; // Sang
     SocketModule, //Sang
     NotificationModule, //Sang
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

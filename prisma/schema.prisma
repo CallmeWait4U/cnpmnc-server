@@ -39,7 +39,7 @@ model Admin {
 }
 
 model Staff {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
   avatar       String
   name         String
   gender       String

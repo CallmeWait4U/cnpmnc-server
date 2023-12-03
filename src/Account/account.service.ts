@@ -1,5 +1,5 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { DatabaseService } from 'libs/database.module';
+import { DatabaseService } from '../../libs/database.module';
 import { SocketGateway } from '../socket.gateway';
 
 @Injectable()
