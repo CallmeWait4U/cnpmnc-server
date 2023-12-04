@@ -11,6 +11,7 @@ import { StaffService } from './staff.service';
 describe('StaffService', () => {
   let staffController: StaffController;
   let staffService: StaffService;
+  let authService: AuthService;
   let databaseService: DatabaseService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,6 +31,7 @@ describe('StaffService', () => {
     }).compile();
 
     staffService = module.get<StaffService>(StaffService);
+    authService = module.get<AuthService>(AuthService);
     staffController = module.get<StaffController>(StaffController);
     databaseService = module.get<DatabaseService>(DatabaseService);
   });
@@ -114,6 +116,12 @@ describe('StaffService', () => {
         username: 'username',
         password: 'password',
       };
+      const mockAccount = {
+        id: 'accountId',
+        username: mockCreateInfo.username,
+        password: mockCreateInfo.password,
+        role: 'STAFF',
+      };
       const mockStaff = {
         id: 'staffId',
         avatar: 'avatar',
@@ -130,6 +138,7 @@ describe('StaffService', () => {
       };
 
       jest.spyOn(databaseService.staff, 'create').mockResolvedValue(mockStaff);
+      jest.spyOn(authService, 'createAccount').mockResolvedValue(mockAccount);
 
       const result = await staffService.createStaff(mockCreateInfo);
 
