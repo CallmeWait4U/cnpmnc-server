@@ -66,7 +66,7 @@ export class RequestService {
         id: request.id, // staff id of the request
       },
     });
-    await this.databaseService.request.create({
+    const newRequest = await this.databaseService.request.create({
       data: {
         ...data,
         Staff: { connect: { id: request.id } },
@@ -84,6 +84,7 @@ export class RequestService {
     await this.databaseService.notification.create({ data: dataNotif });
     const listNotif = await this.databaseService.notification.findMany({});
     this.socketGateway.createLeave(listNotif);
+    console.log(newRequest)
     return { message: 'SUCCESS' };
   }
 
