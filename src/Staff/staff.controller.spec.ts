@@ -4,9 +4,9 @@ import { AuthGuard } from '../Authentication/auth.guard';
 import { RoleGuard } from '../Authentication/role.guard';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { DetailStaffDTO } from './dto/detail.staff.dto';
+import { UpdateStaffDto } from './dto/update-staff.dto';
 import { StaffController } from './staff.controller';
 import { StaffService } from './staff.service';
-import { UpdateStaffDto } from './dto/update-staff.dto';
 
 jest.mock('./staff.service');
 
@@ -67,7 +67,7 @@ describe('StaffController', () => {
       expect(await staffController.createStaff(mockReq)).toBe(mockStaff);
     });
   });
-  
+
   describe('updateStaff', () => {
     it('should return success message', async () => {
       const mockReq: UpdateStaffDto = {
@@ -78,12 +78,17 @@ describe('StaffController', () => {
         address: 'staffAddress',
       };
 
-      jest.spyOn(staffService, 'updateStaff').mockResolvedValueOnce({message: "SUCCESS"});
+      jest
+        .spyOn(staffService, 'updateStaff')
+        .mockResolvedValueOnce({ message: 'SUCCESS' });
 
-      const result = await staffController.updateStaff(mockReq)
+      const result = await staffController.updateStaff(mockReq);
 
-      expect(staffService.updateStaff).toHaveBeenCalledWith(mockReq.id, mockReq)
-      expect(result).toEqual({message: "SUCCESS"});
+      expect(staffService.updateStaff).toHaveBeenCalledWith(
+        mockReq.id,
+        mockReq,
+      );
+      expect(result).toEqual({ message: 'SUCCESS' });
     });
   });
 
@@ -92,26 +97,25 @@ describe('StaffController', () => {
       const mockStaffs = [
         {
           id: 'StaffId',
-          name: "Name",
-          code: "Code",
-          position: "Position",
-          department: "Department",
-          birthday: "Birthday",
-          gender: "Gender",
+          name: 'Name',
+          code: 'Code',
+          position: 'Position',
+          department: 'Department',
+          birthday: 'Birthday',
+          gender: 'Gender',
           address: 'Address',
-          role: "Role"
-        }
-      ]
+          role: 'Role',
+        },
+      ];
 
       jest.spyOn(staffService, 'getAllStaff').mockResolvedValueOnce(mockStaffs);
 
-      const result = await staffController.getAllStaff()
+      const result = await staffController.getAllStaff();
 
-      expect(staffService.getAllStaff).toHaveBeenCalled()
+      expect(staffService.getAllStaff).toHaveBeenCalled();
       expect(result).toEqual(mockStaffs);
     });
   });
-
 
   describe('getStaff', () => {
     it('should return staff detail', async () => {

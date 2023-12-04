@@ -84,7 +84,7 @@ export class RequestService {
     await this.databaseService.notification.create({ data: dataNotif });
     const listNotif = await this.databaseService.notification.findMany({});
     this.socketGateway.createLeave(listNotif);
-    console.log(newRequest)
+    // console.log(newRequest)
     return { message: 'SUCCESS' };
   }
 
