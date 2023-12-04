@@ -132,7 +132,7 @@ describe('StaffService', () => {
       const result = await staffService.updateStaff(mockStaffId, mockUpdateInfo)
 
       expect(databaseService.staff.update).toHaveBeenCalled();
-      expect(result).toStrictEqual(
+      expect(result).toEqual(
         {message: "SUCCESS"}
       );
     });

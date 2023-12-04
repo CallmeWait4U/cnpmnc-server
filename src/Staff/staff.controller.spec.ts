@@ -80,8 +80,10 @@ describe('StaffController', () => {
 
       jest.spyOn(staffService, 'updateStaff').mockResolvedValueOnce({message: "SUCCESS"});
 
-      // expect(staffService.updateStaff).toHaveBeenCalledWith(mockReq.id, mockReq)
-      expect(await staffController.updateStaff(mockReq)).toStrictEqual({message: "SUCCESS"});
+      const result = await staffController.updateStaff(mockReq)
+
+      expect(staffService.updateStaff).toHaveBeenCalledWith(mockReq.id, mockReq)
+      expect(result).toEqual({message: "SUCCESS"});
     });
   });
 
@@ -103,8 +105,10 @@ describe('StaffController', () => {
 
       jest.spyOn(staffService, 'getAllStaff').mockResolvedValueOnce(mockStaffs);
 
-      // expect(staffService.updateStaff).toHaveBeenCalledWith(mockReq.id, mockReq)
-      expect(await staffController.getAllStaff()).toStrictEqual(mockStaffs);
+      const result = await staffController.getAllStaff()
+
+      expect(staffService.getAllStaff).toHaveBeenCalled()
+      expect(result).toEqual(mockStaffs);
     });
   });
 
