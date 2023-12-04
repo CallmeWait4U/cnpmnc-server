@@ -29,6 +29,7 @@ export class StatisticService {
   }
 
   async getDayOff(month) {
+    const nows = Date.now();
     const monthoff = month * 30;
     const listStaff = await this.databaseService.staff.findMany();
     const listRequest = await this.databaseService.request.findMany();
@@ -38,9 +39,19 @@ export class StatisticService {
       let countRequest = 0;
       for (const request of listRequest) {
         if (staff.id === request.staffId && request.status === 'ACCEPT') {
-          const diff = Math.abs(
-            request.endDate.getTime() - request.startDate.getTime(),
-          );
+          let diff = 0;
+          if ((nows - monthoff*86400000) <= request.startDate.getTime() && request.endDate.getTime() <= nows){
+            diff = request.endDate.getTime() - request.startDate.getTime();
+          }
+          else if ((nows - monthoff*86400000) > request.startDate.getTime() && request.endDate.getTime() <= nows){
+            diff = request.endDate.getTime() - nows + monthoff*86400000;
+          }
+          else if (request.endDate.getTime() > nows && (nows - monthoff*86400000) > request.startDate.getTime()){
+            diff = monthoff*86400000;
+          }
+          else if (request.endDate.getTime() > nows && (nows - monthoff*86400000) <= request.startDate.getTime()){
+            diff = nows - request.startDate.getTime();
+          }
           count += diff;
           countRequest++;
         }
