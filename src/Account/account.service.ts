@@ -1,14 +1,15 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { DatabaseService } from '../../libs/database.module';
 import { SocketGateway } from '../socket.gateway';
 
 @Injectable()
 export class AccountService {
-  @Inject() private socketGateway: SocketGateway;
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(
+    private readonly databaseService: DatabaseService,
+    private readonly socketGateway: SocketGateway,
+  ) {}
 
   async getInformation(account_id) {
-    // console.log(account_id);
     const account = await this.databaseService.account.findFirst({
       where: { id: account_id },
     });

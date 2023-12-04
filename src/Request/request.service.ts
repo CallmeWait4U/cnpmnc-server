@@ -1,10 +1,10 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { DatabaseService } from 'libs/database.module';
+import { DatabaseService } from '../../libs/database.module';
+import { SocketGateway } from '../socket.gateway';
 import { CreateRequestDTO } from './dtos/create.request.dto';
 import { RequestResponseDto } from './dtos/request.response.dto';
 import { UpdateStatusDTO } from './dtos/update.status.dto';
-import { SocketGateway } from '../socket.gateway';
 @Injectable()
 export class RequestService {
   @Inject() private socketGateway: SocketGateway;
@@ -20,11 +20,12 @@ export class RequestService {
       requests.push(
         plainToClass(
           RequestResponseDto,
-          { ...request, ...staff },
+          { ...staff, ...request },
           { excludeExtraneousValues: true },
         ),
       );
     }
+    console.log(requests);
     return requests;
   }
 

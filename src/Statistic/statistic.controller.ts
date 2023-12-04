@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/Authentication/auth.guard';
-import { RoleGuard } from 'src/Authentication/role.guard';
+import { AuthGuard } from '../Authentication/auth.guard';
+import { RoleGuard } from '../Authentication/role.guard';
 import { MonthStatisticDTO } from './dto/month.statistic.dto';
 import { StatisticService } from './statistic.service';
 

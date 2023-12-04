@@ -13,13 +13,13 @@ export class SocketGateway {
     console.log(`Client connected: ${client.id}`);
   }
   init(data) {
-    this.server.emit('init', { data });
+    this.server?.emit('init', { data });
   }
   createLeave(data) {
-    this.server.emit('create', { data });
+    this.server?.emit('create', { data });
   }
   handleRequest(data) {
     console.log('callHandle');
-    this.server.emit('handle', { data });
+    this.server?.emit('handle', { data });
   }
 }
