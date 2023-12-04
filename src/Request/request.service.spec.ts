@@ -76,8 +76,7 @@ describe('StaffService', () => {
           ),
         );
       }
-      console.log(mockRequestResponseDtos);
-      expect(await requestController.getPersonalRequest(mockStaff)).toEqual(
+      expect(await requestService.getPersonalRequest(mockStaff)).toEqual(
         mockRequestResponseDtos,
       );
     });

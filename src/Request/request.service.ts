@@ -25,7 +25,6 @@ export class RequestService {
         ),
       );
     }
-    console.log(requests);
     return requests;
   }
 

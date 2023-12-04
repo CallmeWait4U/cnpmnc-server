@@ -40,16 +40,25 @@ export class StatisticService {
       for (const request of listRequest) {
         if (staff.id === request.staffId && request.status === 'ACCEPT') {
           let diff = 0;
-          if ((nows - monthoff*86400000) <= request.startDate.getTime() && request.endDate.getTime() <= nows){
+          if (
+            nows - monthoff * 86400000 <= request.startDate.getTime() &&
+            request.endDate.getTime() <= nows
+          ) {
             diff = request.endDate.getTime() - request.startDate.getTime();
-          }
-          else if ((nows - monthoff*86400000) > request.startDate.getTime() && request.endDate.getTime() <= nows){
-            diff = request.endDate.getTime() - nows + monthoff*86400000;
-          }
-          else if (request.endDate.getTime() > nows && (nows - monthoff*86400000) > request.startDate.getTime()){
-            diff = monthoff*86400000;
-          }
-          else if (request.endDate.getTime() > nows && (nows - monthoff*86400000) <= request.startDate.getTime()){
+          } else if (
+            nows - monthoff * 86400000 > request.startDate.getTime() &&
+            request.endDate.getTime() <= nows
+          ) {
+            diff = request.endDate.getTime() - nows + monthoff * 86400000;
+          } else if (
+            request.endDate.getTime() > nows &&
+            nows - monthoff * 86400000 > request.startDate.getTime()
+          ) {
+            diff = monthoff * 86400000;
+          } else if (
+            request.endDate.getTime() > nows &&
+            nows - monthoff * 86400000 <= request.startDate.getTime()
+          ) {
             diff = nows - request.startDate.getTime();
           }
           count += diff;
