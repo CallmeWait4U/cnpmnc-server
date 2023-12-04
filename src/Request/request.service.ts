@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { DatabaseService } from 'libs/database.module';
+import { DatabaseService } from '../../libs/database.module';
 import { CreateRequestDTO } from './dtos/create.request.dto';
 import { RequestResponseDto } from './dtos/request.response.dto';
 import { UpdateStatusDTO } from './dtos/update.status.dto';
