@@ -15,7 +15,7 @@ export class StaffController {
   @UseGuards(RoleGuard)
   @Get('/getAll')
   async getAllStaff() {
-    return this.staffService.getAllStaff();
+    return await this.staffService.getAllStaff();
   }
 
   @UseGuards(AuthGuard)

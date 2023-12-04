@@ -1,6 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthGuard } from '../Authentication/auth.guard';
+import { RoleGuard } from '../Authentication/role.guard';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { StaffController } from './staff.controller';
 import { StaffService } from './staff.service';
@@ -18,6 +19,7 @@ describe('StaffController', () => {
       providers: [
         StaffService,
         AuthGuard,
+        RoleGuard
         {
           provide: JwtService,
           useValue: {
@@ -66,6 +68,23 @@ describe('StaffController', () => {
   });
   
   describe('updateStaff', () => {
+    it('should return success message', async () => {
+      const mockReq: UpdateStaffDto = {
+        id: 'ObjectId',
+        name: 'staffName',
+        gender: 'staffGender',
+        birthday: new Date(),
+        address: 'staffAddress',
+      };
+
+      jest.spyOn(staffService, 'updateStaff').mockResolvedValueOnce({message: "SUCCESS"});
+
+      // expect(staffService.updateStaff).toHaveBeenCalledWith(mockReq.id, mockReq)
+      expect(await staffController.updateStaff(mockReq)).toStrictEqual({message: "SUCCESS"});
+    });
+  });
+
+  describe('getAllStaff', () => {
     it('should return success message', async () => {
       const mockReq: UpdateStaffDto = {
         id: 'ObjectId',
