@@ -48,4 +48,8 @@ describe('RequestController', () => {
       expect(await requestService.createRequest(mockReq)).toStrictEqual({message: "SUCCESS"})
     })
   })
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 });
