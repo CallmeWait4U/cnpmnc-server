@@ -19,7 +19,7 @@ describe('StaffController', () => {
       providers: [
         StaffService,
         AuthGuard,
-        RoleGuard
+        RoleGuard,
         {
           provide: JwtService,
           useValue: {
@@ -85,19 +85,25 @@ describe('StaffController', () => {
   });
 
   describe('getAllStaff', () => {
-    it('should return success message', async () => {
-      const mockReq: UpdateStaffDto = {
-        id: 'ObjectId',
-        name: 'staffName',
-        gender: 'staffGender',
-        birthday: new Date(),
-        address: 'staffAddress',
-      };
+    it('should return array of staffs', async () => {
+      const mockStaffs = [
+        {
+          id: 'StaffId',
+          name: "Name",
+          code: "Code",
+          position: "Position",
+          department: "Department",
+          birthday: "Birthday",
+          gender: "Gender",
+          address: 'Address',
+          role: "Role"
+        }
+      ]
 
-      jest.spyOn(staffService, 'updateStaff').mockResolvedValueOnce({message: "SUCCESS"});
+      jest.spyOn(staffService, 'getAllStaff').mockResolvedValueOnce(mockStaffs);
 
       // expect(staffService.updateStaff).toHaveBeenCalledWith(mockReq.id, mockReq)
-      expect(await staffController.updateStaff(mockReq)).toStrictEqual({message: "SUCCESS"});
+      expect(await staffController.getAllStaff()).toStrictEqual(mockStaffs);
     });
   });
 
