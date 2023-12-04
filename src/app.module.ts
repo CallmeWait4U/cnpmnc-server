@@ -7,8 +7,6 @@ import { RequestModule } from './Request/request.module';
 import { StaffModule } from './Staff/staff.module';
 import { StatisticModule } from './Statistic/statistic.module';
 import { NotificationModule } from './Notification/notification.module';
-// import { AppController } from './app.controller';
-// import { AppService } from './app.service';
 import { SocketModule } from './socket.modules'; // Sang
 
 @Module({

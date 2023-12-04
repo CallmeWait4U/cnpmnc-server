@@ -4,6 +4,7 @@ import { AuthGuard } from '../Authentication/auth.guard';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { StaffController } from './staff.controller';
 import { StaffService } from './staff.service';
+import { UpdateStaffDto } from './dto/update-staff.dto';
 
 jest.mock('./staff.service');
 
@@ -63,40 +64,24 @@ describe('StaffController', () => {
       expect(await staffController.createStaff(mockReq)).toBe(mockStaff);
     });
   });
-
+  
   describe('updateStaff', () => {
     it('should return success message', async () => {
-      const mockStaff = {
-        id: 'staffId',
-        avatar: 'avatar',
+      const mockReq: UpdateStaffDto = {
+        id: 'ObjectId',
         name: 'staffName',
         gender: 'staffGender',
-        code: 'staffCode',
-        position: 'staffPosition',
-        department: 'staffDepartment',
-        phoneNumber: 'staffPhoneNumber',
         birthday: new Date(),
         address: 'staffAddress',
       };
-      const mockReq: CreateStaffDto = {
-        avatar: 'avatar',
-        name: 'staffName',
-        gender: 'staffGender',
-        code: 'staffCode',
-        position: 'staffPosition',
-        department: 'staffDepartment',
-        phoneNumber: 'staffPhoneNumber',
-        birthday: new Date(),
-        address: 'staffAddress',
-        username: 'username',
-        password: 'password',
-      };
 
-      jest.spyOn(staffService, 'createStaff').mockResolvedValue(mockStaff);
+      jest.spyOn(staffService, 'updateStaff').mockResolvedValueOnce({message: "SUCCESS"});
 
-      expect(await staffController.createStaff(mockReq)).toBe(mockStaff);
+      // expect(staffService.updateStaff).toHaveBeenCalledWith(mockReq.id, mockReq)
+      expect(await staffController.updateStaff(mockReq)).toStrictEqual({message: "SUCCESS"});
     });
   });
+
 
   afterEach(() => {
     jest.clearAllMocks();

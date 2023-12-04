@@ -4,6 +4,7 @@ import { Staff } from '@prisma/client';
 import { DatabaseService } from '../../libs/database.module';
 import { AuthService } from '../Authentication/auth.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
+import { UpdateStaffDto } from './dto/update-staff.dto';
 
 @Injectable()
 export class StaffService {
@@ -68,8 +69,8 @@ export class StaffService {
     return created_staff;
   }
 
-  async updateStaff(staff_id, staff): Promise<any> {
-    console.log(staff)
+  async updateStaff(staff_id: String, staff): Promise<any> {
+    // console.log(staff.birthday)
     delete staff.id;
     let updated_staff: Staff;
     try {
@@ -79,7 +80,7 @@ export class StaffService {
         include: { Account: true },
       });
     } catch (error){
-      console.log(error)
+      // console.log(error)
       return { message: 'FAIL' };
     }
     const result = { message: 'SUCCESS' };

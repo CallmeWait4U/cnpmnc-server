@@ -5,7 +5,7 @@ import { CreateStaffDto } from './create-staff.dto';
 import { Transform, Type } from 'class-transformer';
 
 export class UpdateStaffDto extends PartialType(CreateStaffDto) {
-  @ApiProperty({ type: String, description: 'staffId' })
+  @ApiProperty({ example: "654eeaf9b0bf5ab90c614632", type: String, description: 'staffId' })
   @IsNotEmpty()
   @IsString()
   readonly id: string;
