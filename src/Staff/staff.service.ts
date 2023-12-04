@@ -33,12 +33,12 @@ export class StaffService {
       console.log(error);
       return { message: 'FAIL' };
     }
-    console.log(staffs);
+    // console.log(staffs);
     staffs = staffs.map(({ Account, ...rest }) => {
       // console.log(Account)
       return { ...rest, role: Account[0].role };
     });
-    console.log(staffs);
+    // console.log(staffs);
     return staffs;
   }
 
@@ -77,12 +77,14 @@ export class StaffService {
       updated_staff = await this.databaseService.staff.update({
         data: staff,
         where: { id: staff_id },
-        include: { Account: true },
+        // include: { Account: true },
       });
+      
     } catch (error){
       // console.log(error)
       return { message: 'FAIL' };
     }
+    console.log(updated_staff)
     const result = { message: 'SUCCESS' };
     if (!updated_staff) result.message = 'FAIL';
     return result;

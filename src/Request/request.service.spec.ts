@@ -7,6 +7,7 @@ import { AuthGuard } from '../Authentication/auth.guard';
 import { RequestResponseDto } from './dtos/request.response.dto';
 import { RequestController } from './request.controller';
 import { RequestService } from './request.service';
+import { CreateRequestDTO } from './dtos/create.request.dto';
 
 describe('StaffService', () => {
   let requestController: RequestController;
@@ -81,6 +82,37 @@ describe('StaffService', () => {
       );
     });
   });
+  
+  describe('createRequest', () => {
+    it('should return personal requests', async () => {
+      const mockRequest: CreateRequestDTO = {
+        id: 'StaffId',
+        reason: 'Some reason',
+        startDate: 'startDate',
+        endDate: 'endDate'
+      }
+      const mockStaff = { id: 'staffId', Request: mockRequests };
+
+      jest
+        .spyOn(databaseService.staff, 'findFirst')
+        .mockResolvedValue(mockStaff);
+
+      let mockRequestResponseDtos = [];
+      for (const request of mockStaff.Request) {
+        mockRequestResponseDtos.push(
+          plainToClass(
+            RequestResponseDto,
+            { ...mockStaff, ...request },
+            { excludeExtraneousValues: true },
+          ),
+        );
+      }
+      expect(await requestService.getPersonalRequest(mockStaff)).toEqual(
+        mockRequestResponseDtos,
+      );
+    });
+  });
+
 
   afterEach(() => {
     jest.clearAllMocks();
