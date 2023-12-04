@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { AuthDTO } from './dto/auth.dto';
 
 jest.mock('./auth.service');
 
@@ -62,6 +63,23 @@ describe('AuthController', () => {
         .mockResolvedValue(mockAccountInfo);
 
       expect(await authController.createAccount(mockReq)).toBe(mockAccountInfo);
+    });
+  });
+
+  describe('signIn', () => {
+    it('should return access_token', async () => {
+      const mockAuth: AuthDTO = {
+        username: 'username',
+        password: '123456',
+      };
+
+      jest
+        .spyOn(authService, 'signIn')
+        .mockResolvedValue({ access_token: 'access_token' });
+
+      expect(await authController.signIn(mockAuth)).toEqual({
+        access_token: 'access_token',
+      });
     });
   });
 

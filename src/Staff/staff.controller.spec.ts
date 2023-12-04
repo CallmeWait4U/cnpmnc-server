@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthGuard } from '../Authentication/auth.guard';
 import { RoleGuard } from '../Authentication/role.guard';
 import { CreateStaffDto } from './dto/create-staff.dto';
+import { DetailStaffDTO } from './dto/detail.staff.dto';
 import { StaffController } from './staff.controller';
 import { StaffService } from './staff.service';
 import { UpdateStaffDto } from './dto/update-staff.dto';
@@ -107,6 +108,31 @@ describe('StaffController', () => {
     });
   });
 
+
+  describe('getStaff', () => {
+    it('should return staff detail', async () => {
+      const mockStaff = {
+        id: 'staffId',
+        avatar: 'avatar',
+        name: 'staffName',
+        gender: 'staffGender',
+        code: 'staffCode',
+        position: 'staffPosition',
+        department: 'staffDepartment',
+        phoneNumber: 'staffPhoneNumber',
+        birthday: new Date(),
+        address: 'staffAddress',
+      };
+
+      const mockReq: DetailStaffDTO = { id: 'staffId' };
+
+      jest.spyOn(staffService, 'getStaff').mockResolvedValue(mockStaff);
+
+      const retrievedStaff = await staffController.getStaff(mockReq);
+
+      expect(retrievedStaff).toEqual(mockStaff);
+    });
+  });
 
   afterEach(() => {
     jest.clearAllMocks();

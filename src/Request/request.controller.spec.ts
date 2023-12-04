@@ -49,6 +49,31 @@ describe('RequestController', () => {
     })
   })
 
+  describe('getPersonalRequest', () => {
+    it('should return personal requests', async () => {
+      const mockStaffId = { id: 'staffId' };
+      const mockRequest = [
+        {
+          id: 'requestId',
+          title: 'test',
+          reason: 'test',
+          startDate: new Date(),
+          endDate: new Date(),
+          status: 'test',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          staffId: 'staffId',
+        },
+      ];
+      jest
+        .spyOn(requestService, 'getPersonalRequest')
+        .mockResolvedValue(mockRequest);
+      expect(await requestController.getPersonalRequest(mockStaffId)).toBe(
+        mockRequest,
+      );
+    });
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
