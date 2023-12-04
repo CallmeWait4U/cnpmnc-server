@@ -70,7 +70,7 @@ export class StatisticService {
       if (count > monthoff) {
         count = monthoff;
       }
-      dayoff.push({ id: staff.id, name: staff.name, dayoff: count });
+      dayoff.push({ id: staff.id, name: staff.name, code: staff.code , dayoff: count });
     }
     return dayoff;
   }
