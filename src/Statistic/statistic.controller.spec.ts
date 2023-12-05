@@ -1,10 +1,10 @@
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthGuard } from '../Authentication/auth.guard';
+import { RoleGuard } from '../Authentication/role.guard';
 import { MonthStatisticDTO } from './dto/month.statistic.dto';
 import { StatisticController } from './statistic.controller';
 import { StatisticService } from './statistic.service';
-import { RoleGuard } from '../Authentication/role.guard';
 
 jest.mock('./statistic.service');
 

@@ -1,10 +1,8 @@
 import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
+  Injectable
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { DatabaseService } from 'libs/database.module';
+import { DatabaseService } from '../../libs/database.module';
 const saltRounds = 10;
 
 @Injectable()
@@ -19,9 +17,17 @@ export class ChangepassService {
     const user = await this.databaseService.account.findFirst({
       where: { username: username },
     });
-    if (!user) throw new NotFoundException();
+    if (!user){
+      return {
+          "message": "Username Not Found",
+          "statusCode": 404
+      }
+    }
     if (!bcrypt.compareSync(password, user.password)) {
-      throw new UnauthorizedException();
+      return {
+        "message": "Wrong password",
+        "statusCode": 401
+    }
     }
     const passwordHashed = await bcrypt.hash(confirmPassword, saltRounds);
     await this.databaseService.account.update({

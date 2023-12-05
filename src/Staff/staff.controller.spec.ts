@@ -4,9 +4,9 @@ import { AuthGuard } from '../Authentication/auth.guard';
 import { RoleGuard } from '../Authentication/role.guard';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { DetailStaffDTO } from './dto/detail.staff.dto';
+import { UpdateStaffDto } from './dto/update-staff.dto';
 import { StaffController } from './staff.controller';
 import { StaffService } from './staff.service';
-import { UpdateStaffDto } from './dto/update-staff.dto';
 
 jest.mock('./staff.service');
 
@@ -133,6 +133,16 @@ describe('StaffController', () => {
       expect(retrievedStaff).toEqual(mockStaff);
     });
   });
+
+  describe('deleteStaff', () =>{
+    it('should return success', async () =>{
+      const mockReq: DetailStaffDTO = { id: '1' };
+      jest
+        .spyOn(staffService, 'deleteStaff')
+        .mockResolvedValue({message: "SUCCESS"});
+      expect(await staffController.deleteStaff(mockReq)).toEqual({message: "SUCCESS"},)
+    })
+  })
 
   afterEach(() => {
     jest.clearAllMocks();
