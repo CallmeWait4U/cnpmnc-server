@@ -45,7 +45,9 @@ describe('RequestController', () => {
 
       jest.spyOn(requestService, 'createRequest').mockResolvedValueOnce({message: 'SUCCESS'});
 
-      expect(await requestService.createRequest(mockReq)).toStrictEqual({message: "SUCCESS"})
+      const result = await requestService.createRequest(mockReq);
+
+      expect(result).toEqual({message: "SUCCESS"})
     })
   })
 

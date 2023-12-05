@@ -67,7 +67,7 @@ describe('StaffController', () => {
       expect(await staffController.createStaff(mockReq)).toBe(mockStaff);
     });
   });
-  
+
   describe('updateStaff', () => {
     it('should return success message', async () => {
       const mockReq: UpdateStaffDto = {
@@ -78,10 +78,17 @@ describe('StaffController', () => {
         address: 'staffAddress',
       };
 
-      jest.spyOn(staffService, 'updateStaff').mockResolvedValueOnce({message: "SUCCESS"});
+      jest
+        .spyOn(staffService, 'updateStaff')
+        .mockResolvedValueOnce({ message: 'SUCCESS' });
 
-      // expect(staffService.updateStaff).toHaveBeenCalledWith(mockReq.id, mockReq)
-      expect(await staffController.updateStaff(mockReq)).toStrictEqual({message: "SUCCESS"});
+      const result = await staffController.updateStaff(mockReq);
+
+      expect(staffService.updateStaff).toHaveBeenCalledWith(
+        mockReq.id,
+        mockReq,
+      );
+      expect(result).toEqual({ message: 'SUCCESS' });
     });
   });
 
@@ -90,24 +97,25 @@ describe('StaffController', () => {
       const mockStaffs = [
         {
           id: 'StaffId',
-          name: "Name",
-          code: "Code",
-          position: "Position",
-          department: "Department",
-          birthday: "Birthday",
-          gender: "Gender",
+          name: 'Name',
+          code: 'Code',
+          position: 'Position',
+          department: 'Department',
+          birthday: 'Birthday',
+          gender: 'Gender',
           address: 'Address',
-          role: "Role"
-        }
-      ]
+          role: 'Role',
+        },
+      ];
 
       jest.spyOn(staffService, 'getAllStaff').mockResolvedValueOnce(mockStaffs);
 
-      // expect(staffService.updateStaff).toHaveBeenCalledWith(mockReq.id, mockReq)
-      expect(await staffController.getAllStaff()).toStrictEqual(mockStaffs);
+      const result = await staffController.getAllStaff();
+
+      expect(staffService.getAllStaff).toHaveBeenCalled();
+      expect(result).toEqual(mockStaffs);
     });
   });
-
 
   describe('getStaff', () => {
     it('should return staff detail', async () => {

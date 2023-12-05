@@ -52,24 +52,24 @@ export class RequestService {
     return results;
   }
 
-  async createRequest(staff: CreateRequestDTO) {
+  async createRequest(request: CreateRequestDTO) {
     const time = new Date().toISOString();
     const data = {
       title: 'test',
-      reason: staff.reason,
-      startDate: new Date(staff.startDate),
-      endDate: new Date(staff.endDate),
+      reason: request.reason,
+      startDate: new Date(request.startDate),
+      endDate: new Date(request.endDate),
       status: 'PENDING',
     };
     const dataStaff = await this.databaseService.staff.findFirst({
       where: {
-        id: staff.id,
+        id: request.id, // staff id of the request
       },
     });
-    await this.databaseService.request.create({
+    const newRequest = await this.databaseService.request.create({
       data: {
         ...data,
-        Staff: { connect: { id: staff.id } },
+        Staff: { connect: { id: request.id } },
       },
     });
     const dataNotif = {
@@ -79,11 +79,12 @@ export class RequestService {
       }  needed to review`,
       status: '0',
       time,
-      Staff: { connect: { id: staff.id } },
+      Staff: { connect: { id: request.id } },
     };
     await this.databaseService.notification.create({ data: dataNotif });
     const listNotif = await this.databaseService.notification.findMany({});
     this.socketGateway.createLeave(listNotif);
+    // console.log(newRequest)
     return { message: 'SUCCESS' };
   }
 
