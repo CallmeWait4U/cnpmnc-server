@@ -34,7 +34,7 @@ export class AccountService {
             },
           })
         : [];
-    this.socketGateway.init(listNotif);
+    this.socketGateway.init({ data: listNotif, userId: info.id });
     return { ...info, role: account.role };
   }
 }
