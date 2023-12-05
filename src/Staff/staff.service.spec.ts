@@ -11,6 +11,7 @@ import { StaffService } from './staff.service';
 describe('StaffService', () => {
   let staffController: StaffController;
   let staffService: StaffService;
+  let authService: AuthService;
   let databaseService: DatabaseService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,6 +31,7 @@ describe('StaffService', () => {
     }).compile();
 
     staffService = module.get<StaffService>(StaffService);
+    authService = module.get<AuthService>(AuthService);
     staffController = module.get<StaffController>(StaffController);
     databaseService = module.get<DatabaseService>(DatabaseService);
   });
@@ -65,38 +67,83 @@ describe('StaffService', () => {
     it("should return all staffs' detail", async () => {
       const mockStaffDocuments = [
         {
-        id: 'staffId',
-        // avatar: 'avatar',
+          id: 'staffId',
+          // avatar: 'avatar',
+          name: 'staffName',
+          gender: 'staffGender',
+          code: 'staffCode',
+          position: 'staffPosition',
+          department: 'staffDepartment',
+          // phoneNumber: 'staffPhoneNumber',
+          birthday: new Date(),
+          address: 'staffAddress',
+          Account: [
+            {
+              //another fields
+              role: 'staffRole',
+            },
+          ],
+        },
+      ];
+
+      const mockStaffs = mockStaffDocuments.map(({ Account, ...rest }) => {
+        return { ...rest, role: Account[0].role };
+      });
+
+      jest
+        .spyOn(databaseService.staff, 'findMany')
+        .mockResolvedValueOnce(mockStaffDocuments);
+
+      const result = await staffService.getAllStaff();
+
+      expect(databaseService.staff.findMany).toHaveBeenCalled();
+      expect(result).toEqual(mockStaffs);
+    });
+  });
+
+  describe('creatStaff', () => {
+    it('should return success message', async () => {
+      const mockCreateInfo = {
+        avatar: 'avatar',
         name: 'staffName',
         gender: 'staffGender',
         code: 'staffCode',
         position: 'staffPosition',
         department: 'staffDepartment',
-        // phoneNumber: 'staffPhoneNumber',
+        phoneNumber: 'staffPhoneNumber',
         birthday: new Date(),
         address: 'staffAddress',
-        Account: [
-          {
-            //another fields
-            role: 'staffRole',
-          }
-        ],
-      }
-    ];
+        username: 'username',
+        password: 'password',
+      };
+      const mockAccount = {
+        id: 'accountId',
+        username: mockCreateInfo.username,
+        password: mockCreateInfo.password,
+        role: 'STAFF',
+      };
+      const mockStaff = {
+        id: 'staffId',
+        avatar: 'avatar',
+        name: 'staffName',
+        gender: 'staffGender',
+        code: 'staffCode',
+        position: 'staffPosition',
+        department: 'staffDepartment',
+        phoneNumber: 'staffPhoneNumber',
+        birthday: new Date(),
+        address: 'staffAddress',
+        numLeaveDays: 0,
+        adminId: null,
+      };
 
-    const mockStaffs = mockStaffDocuments.map(({ Account, ...rest }) => {
-      return { ...rest, role: Account[0].role };
-    });
+      jest.spyOn(databaseService.staff, 'create').mockResolvedValue(mockStaff);
+      jest.spyOn(authService, 'createAccount').mockResolvedValue(mockAccount);
 
-      jest
-        .spyOn(databaseService.staff, 'findMany').mockResolvedValueOnce(mockStaffDocuments);
+      const result = await staffService.createStaff(mockCreateInfo);
 
-      const result = await staffService.getAllStaff();
-
-      expect(databaseService.staff.findMany).toHaveBeenCalled()
-      expect(result).toEqual(
-        mockStaffs
-      );
+      expect(databaseService.staff.create).toHaveBeenCalled();
+      expect(result).toBe(mockStaff);
     });
   });
 
@@ -122,19 +169,18 @@ describe('StaffService', () => {
         birthday: mockUpdateInfo.birthday,
         address: 'staffAddress',
         numLeaveDays: 0,
-        adminId: null
+        adminId: null,
       };
 
-      jest
-        .spyOn(databaseService.staff, 'update')
-        .mockResolvedValue(mockStaff);
+      jest.spyOn(databaseService.staff, 'update').mockResolvedValue(mockStaff);
 
-      const result = await staffService.updateStaff(mockStaffId, mockUpdateInfo)
+      const result = await staffService.updateStaff(
+        mockStaffId,
+        mockUpdateInfo,
+      );
 
       expect(databaseService.staff.update).toHaveBeenCalled();
-      expect(result).toEqual(
-        {message: "SUCCESS"}
-      );
+      expect(result).toEqual({ message: 'SUCCESS' });
     });
   });
 
