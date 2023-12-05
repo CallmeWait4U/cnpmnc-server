@@ -1,9 +1,9 @@
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { RequestController } from './request.controller';
-import { RequestService } from './request.service';
 import { AuthGuard } from '../Authentication/auth.guard';
 import { CreateRequestDTO } from './dtos/create.request.dto';
-import { JwtService } from '@nestjs/jwt';
+import { RequestController } from './request.controller';
+import { RequestService } from './request.service';
 
 jest.mock('./request.service');
 
@@ -23,7 +23,7 @@ describe('RequestController', () => {
             //
           },
         },
-      ]
+      ],
     }).compile();
 
     requestController = module.get<RequestController>(RequestController);
@@ -40,16 +40,18 @@ describe('RequestController', () => {
         id: 'StaffId',
         reason: 'Some reason',
         startDate: 'startDate',
-        endDate: 'endDate'
-      }
+        endDate: 'endDate',
+      };
 
-      jest.spyOn(requestService, 'createRequest').mockResolvedValueOnce({message: 'SUCCESS'});
+      jest
+        .spyOn(requestService, 'createRequest')
+        .mockResolvedValueOnce({ message: 'SUCCESS' });
 
       const result = await requestService.createRequest(mockReq);
 
-      expect(result).toEqual({message: "SUCCESS"})
-    })
-  })
+      expect(result).toEqual({ message: 'SUCCESS' });
+    });
+  });
 
   describe('getPersonalRequest', () => {
     it('should return personal requests', async () => {

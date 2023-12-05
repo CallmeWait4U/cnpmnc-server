@@ -83,6 +83,16 @@ describe('AuthController', () => {
     });
   });
 
+  describe('signOut', () => {
+    it('should return void type', async () => {
+      const mockAuth = { user: { sub: 'accountId' } };
+
+      jest.spyOn(authService, 'signOut').mockResolvedValue();
+
+      expect(await authController.signOut(mockAuth)).toBeUndefined();
+    });
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });

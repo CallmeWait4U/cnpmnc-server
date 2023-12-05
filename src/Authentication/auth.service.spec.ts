@@ -8,7 +8,6 @@ import { AuthService } from './auth.service';
 import { AuthDTO } from './dto/auth.dto';
 
 describe('AuthService', () => {
-  let authController: AuthController;
   let authService: AuthService;
   let datbaseService: DatabaseService;
   beforeEach(async () => {
@@ -28,8 +27,32 @@ describe('AuthService', () => {
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
-    authController = module.get<AuthController>(AuthController);
     datbaseService = module.get<DatabaseService>(DatabaseService);
+  });
+
+  describe('createAccount', () => {
+    it('should return account info', async () => {
+      const mockAuth: AuthDTO = {
+        username: 'username',
+        password: '123456',
+      };
+
+      const mockAccountInfo = {
+        id: 'accountId',
+        usenname: mockAuth.username,
+        password: await bcrypt.hash(mockAuth.password, 10),
+        role: 'STAFF',
+      };
+
+      jest.spyOn(datbaseService.account, 'findFirst').mockResolvedValue(null);
+      jest
+        .spyOn(datbaseService.account, 'create')
+        .mockResolvedValue(mockAccountInfo);
+
+      expect(
+        await authService.createAccount(mockAuth.username, mockAuth.password),
+      ).toEqual(mockAccountInfo);
+    });
   });
 
   describe('signIn', () => {
@@ -50,11 +73,14 @@ describe('AuthService', () => {
         .mockResolvedValue(mockAccountInfo);
       jest.spyOn(datbaseService.account, 'update').mockResolvedValue(null);
 
-      expect(await authController.signIn(mockAuth)).toEqual({
+      expect(
+        await authService.signIn(mockAuth.username, mockAuth.password),
+      ).toEqual({
         access_token: 'access_token',
       });
     });
   });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
