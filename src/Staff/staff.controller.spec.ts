@@ -142,6 +142,16 @@ describe('StaffController', () => {
     });
   });
 
+  describe('deleteStaff', () =>{
+    it('should return success', async () =>{
+      const mockReq: DetailStaffDTO = { id: '1' };
+      jest
+        .spyOn(staffService, 'deleteStaff')
+        .mockResolvedValue({message: "SUCCESS"});
+      expect(await staffController.deleteStaff(mockReq)).toEqual({message: "SUCCESS"},)
+    })
+  })
+
   afterEach(() => {
     jest.clearAllMocks();
   });

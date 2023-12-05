@@ -1,6 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthGuard } from '../Authentication/auth.guard';
+import { RoleGuard } from '../Authentication/role.guard';
 import { MonthStatisticDTO } from './dto/month.statistic.dto';
 import { StatisticController } from './statistic.controller';
 import { StatisticService } from './statistic.service';
@@ -17,6 +18,7 @@ describe('StatisticController', () => {
       providers: [
         StatisticService,
         AuthGuard,
+        RoleGuard,
         {
           provide: JwtService,
           useValue: {
@@ -47,6 +49,27 @@ describe('StatisticController', () => {
       );
     });
   });
+
+  describe('getDayoff', () => {
+    it('should return all staff dayoff', async () => {
+      const mockMonth: MonthStatisticDTO = { month: 1 };
+      const mockDayoff = [
+        {
+          id: '123',
+          name: 'abc',
+          code: '456',
+          dayoff: 3
+        },
+      ];
+      jest
+        .spyOn(statisticService, 'getDayOff')
+        .mockResolvedValue(mockDayoff);
+      expect(await statisticController.getDayoff(mockMonth)).toBe(
+        mockDayoff,
+      );
+    });
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });

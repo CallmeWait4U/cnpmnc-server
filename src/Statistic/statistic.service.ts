@@ -40,26 +40,43 @@ export class StatisticService {
       for (const request of listRequest) {
         if (staff.id === request.staffId && request.status === 'ACCEPT') {
           let diff = 0;
-          if (
-            nows - monthoff * 86400000 <= request.startDate.getTime() &&
-            request.endDate.getTime() <= nows
+          let startDate = request.startDate;
+          let endDate = request.endDate;
+          if (startDate instanceof Date){}
+          else{
+            startDate = new Date(startDate);
+          }
+          if (endDate instanceof Date){}
+          else{
+            endDate = new Date(endDate);
+          }
+          if (endDate.getTime() > nows &&
+          nows < startDate.getTime()){
+            continue;
+          }
+          else if (endDate.getTime() < nows - monthoff * 86400000){
+            continue;
+          }
+          else if (
+            nows - monthoff * 86400000 <= startDate.getTime() &&
+            endDate.getTime() <= nows
           ) {
-            diff = request.endDate.getTime() - request.startDate.getTime();
+            diff = endDate.getTime() - startDate.getTime();
           } else if (
-            nows - monthoff * 86400000 > request.startDate.getTime() &&
-            request.endDate.getTime() <= nows
+            nows - monthoff * 86400000 > startDate.getTime() &&
+            endDate.getTime() <= nows
           ) {
-            diff = request.endDate.getTime() - nows + monthoff * 86400000;
+            diff = endDate.getTime() - nows + monthoff * 86400000;
           } else if (
-            request.endDate.getTime() > nows &&
-            nows - monthoff * 86400000 > request.startDate.getTime()
+            endDate.getTime() > nows &&
+            nows - monthoff * 86400000 > startDate.getTime()
           ) {
             diff = monthoff * 86400000;
           } else if (
-            request.endDate.getTime() > nows &&
-            nows - monthoff * 86400000 <= request.startDate.getTime()
+            endDate.getTime() > nows &&
+            nows - monthoff * 86400000 <= startDate.getTime()
           ) {
-            diff = nows - request.startDate.getTime();
+            diff = nows - startDate.getTime();
           }
           count += diff;
           countRequest++;

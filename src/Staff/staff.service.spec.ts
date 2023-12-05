@@ -184,6 +184,12 @@ describe('StaffService', () => {
     });
   });
 
+  describe('deleteStaff', () => {
+    it ('should return fail because wrong id', async () => {
+      expect(await staffService.deleteStaff("1")).toEqual({message: "FAIL"})
+    })
+  })
+
   afterEach(() => {
     jest.clearAllMocks();
   });
